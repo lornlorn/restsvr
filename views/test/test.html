@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test Page</title>
+</head>
+
+<body>
+    <div id="json">
+        <p>测试POST发送JSON请求,且接收JSON应答</p>
+        <ul>
+            <li>
+                <label id="module">test</label>
+            </li>
+            <li>
+                <input id="username" name="username">
+            </li>
+            <li>
+                <input id="password" name="password">
+            </li>
+            <li>
+                <button id="submit">确定</button>
+            </li>
+            <li>
+                请求状态:
+                <label id="status"></label>
+            </li>
+            <li>
+                返回结果:
+                <label id="result"></label>
+            </li>
+        </ul>
+    </div>
+
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/testAjax.js"></script>
+</body>
+
+</html>
