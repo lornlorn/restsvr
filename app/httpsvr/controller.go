@@ -2,6 +2,7 @@ package httpsvr
 
 import (
 	"app/models"
+	"app/redisctr"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -23,6 +24,7 @@ func notFoundHandler(res http.ResponseWriter, req *http.Request) {
 			go fmt.Printf("%v %v\n", req.URL, i)
 			// time.Sleep(1 * time.Second)
 		}
+		fmt.Fprintln(res, "Route aaa Finish")
 		return
 	}
 	tmpl, err := template.ParseFiles("views/error/404.html")
@@ -33,7 +35,7 @@ func notFoundHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func indexHandle(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "route index : %v\n", req.URL)
+	fmt.Fprintf(res, "Route Index : %v\n", req.URL)
 }
 
 func testHandle(res http.ResponseWriter, req *http.Request) {
@@ -45,18 +47,59 @@ func testHandle(res http.ResponseWriter, req *http.Request) {
 	tmpl.Execute(res, nil)
 }
 
+func redisHandler(res http.ResponseWriter, req *http.Request) {
+	log.Printf("Route Redis : %v\n", req.URL)
+	redisController := redisctr.RedisController{"tcp", "127.0.0.1", 6379}
+	err := redisController.Connect()
+	if err != nil {
+		log.Printf("Redis Connect Failed : %v\n", err)
+	}
+	// err = redisController.Set("username", "hqdiaolei")
+	// if err != nil {
+	// 	log.Printf("Redis SET Failed : %v\n", err)
+	// }
+
+	// reply, err := redisController.Get("username")
+	// if err != nil {
+	// 	log.Printf("Redis GET Failed : %v\n", err)
+	// }
+	err = redisController.Lpush("chan", "task1")
+	if err != nil {
+		log.Printf("Redis LPUSH Failed : %v\n", err)
+	}
+	err = redisController.Lpush("chan", "task2")
+	if err != nil {
+		log.Printf("Redis LPUSH Failed : %v\n", err)
+	}
+
+	reply, err := redisController.Rpop("chan")
+	if err != nil {
+		log.Printf("Redis RPOP Failed : %v\n", err)
+	}
+
+	err = redisController.Close()
+	if err != nil {
+		log.Printf("Redis Connector Close Failed : %v\n", err)
+	}
+	fmt.Fprintf(res, "Route Redis Finish : %v", reply)
+}
+
 func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route Ajax : %v\n", req.URL)
 	log.Printf("Request Method : %v\n", req.Method)
 
 	var ajaxreq models.AjaxReq
 	reqBody, _ := ioutil.ReadAll(req.Body)
+
 	err := json.Unmarshal(reqBody, &ajaxreq)
 	defer req.Body.Close()
 	if err != nil {
 		log.Printf("Unmarshal Json Error : %v\n", err)
 		return
 	}
+
+	err = redisSetAndGet("SET", "module", ajaxreq.Module)
+	err = redisSetAndGet("SET", "data", ajaxreq.Data)
 
 	// Show Request JSON Data
 	log.Println(string(reqBody))
@@ -85,6 +128,32 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Printf("Marshal Json Error : %v\n", err)
 	}
+
 	res.Write(retdata)
 	// json.NewEncoder(res).Encode(ret)
+}
+
+func redisSetAndGet(oper string, key string, value interface{}) error {
+	redisController := redisctr.RedisController{"tcp", "127.0.0.1", 6379}
+	err := redisController.Connect()
+	if err != nil {
+		log.Printf("Redis Connect Failed : %v\n", err)
+		return err
+	}
+	switch oper {
+	case "GET":
+		reply, err := redisController.Get(key)
+	case "SET":
+		err := redisController.Set(key, value)
+	}
+	if err != nil {
+		log.Printf("Redis Get&Set Failed : %v\n", err)
+		return err
+	}
+	err = redisController.Close()
+	if err != nil {
+		log.Printf("Redis Close Failed : %v\n", err)
+		return err
+	}
+	return nil
 }
