@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>任务编辑</title>
+</head>
+
+<body>
+    <div id="title">
+        <p>----------任务信息----------</p>
+        <label>系统:</label>
+        <input id="system" name="system" value="TEST">
+        <label>名称:</label>
+        <input id="name" name="name" value="测试任务">
+        <label>执行时间表达式:</label>
+        <input id="runtime" name="runtime" value="30 * * * *">
+    </div>
+    <div id="joblist">
+        <p>----------作业列表----------</p>
+        <div id="joboperation">
+            <button id="add">添加步骤</button>
+            <button id="delete">删除步骤</button>
+        </div>
+        <div id="jobinfo">
+            <div id="step1">
+                <p>----------STEP 1----------</p>
+                <input type="checkbox" id="step1_checkbox">
+                <label>IP:</label>
+                <input id="step1_ip" name="ip">
+                <label>端口:</label>
+                <input id="step1_port" name="port" value="22">
+                <label>用户名:</label>
+                <input id="step1_username" name="username" value="test">
+                <label>密码:</label>
+                <input id="step1_password" name="password" value="test">
+                <label>命令:</label>
+                <input id="step1_command" name="command" value="ls -lrt">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

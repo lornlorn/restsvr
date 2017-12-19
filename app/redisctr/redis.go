@@ -1,6 +1,7 @@
 package redisctr
 
 import (
+	"app/models"
 	"fmt"
 	"log"
 
@@ -8,29 +9,25 @@ import (
 )
 
 /*
-RedisController redis.Conn
+RedisClient redis.Conn
 */
-type RedisController struct {
-	Proto string
-	Addr  string
-	Port  int
-	Conn  redis.Conn
+type RedisClient struct {
+	Client redis.Conn
 }
 
 /*
 Connect func(Proto string, Addr string, Port int) (redis.Conn, error)
 */
-func (rc *RedisController) Connect() error {
+func Connect(rc models.RedisConnector) (redis.Conn, error) {
 	conn, err := redis.Dial(rc.Proto, fmt.Sprintf("%v:%v", rc.Addr, rc.Port))
-	rc.Conn = conn
-	return err
+	return conn, err
 }
 
 /*
 Set func(key string, value interface{})
 */
-func (rc *RedisController) Set(key string, value interface{}) error {
-	reply, err := rc.Conn.Do("SET", key, value)
+func (rc *RedisClient) Set(key string, value interface{}) error {
+	reply, err := rc.Client.Do("SET", key, value)
 	log.Printf("Redis SET Reply : %v", reply)
 	return err
 }
@@ -38,8 +35,8 @@ func (rc *RedisController) Set(key string, value interface{}) error {
 /*
 Get func(key string)
 */
-func (rc *RedisController) Get(key string) (interface{}, error) {
-	reply, err := redis.String(rc.Conn.Do("Get", key))
+func (rc *RedisClient) Get(key string) (interface{}, error) {
+	reply, err := redis.String(rc.Client.Do("Get", key))
 	log.Printf("Redis GET Reply : %v", reply)
 	return reply, err
 }
@@ -47,8 +44,8 @@ func (rc *RedisController) Get(key string) (interface{}, error) {
 /*
 Lpush func(key string, value interface{})
 */
-func (rc *RedisController) Lpush(key string, value interface{}) error {
-	reply, err := rc.Conn.Do("LPUSH", key, value)
+func (rc *RedisClient) Lpush(key string, value interface{}) error {
+	reply, err := rc.Client.Do("LPUSH", key, value)
 	log.Printf("Redis LPUSH Reply : %v", reply)
 	return err
 }
@@ -56,8 +53,8 @@ func (rc *RedisController) Lpush(key string, value interface{}) error {
 /*
 Rpop func(key string)
 */
-func (rc *RedisController) Rpop(key string) (interface{}, error) {
-	reply, err := redis.String(rc.Conn.Do("RPOP", key))
+func (rc *RedisClient) Rpop(key string) (interface{}, error) {
+	reply, err := redis.String(rc.Client.Do("RPOP", key))
 	log.Printf("Redis RPOP Reply : %v", reply)
 	return reply, err
 }
@@ -65,7 +62,7 @@ func (rc *RedisController) Rpop(key string) (interface{}, error) {
 /*
 Close func()
 */
-func (rc *RedisController) Close() error {
-	err := rc.Conn.Close()
+func (rc *RedisClient) Close() error {
+	err := rc.Client.Close()
 	return err
 }
