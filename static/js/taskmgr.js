@@ -7,3 +7,8 @@ $(function () {
         alert(value);
     });
 });
+
+$("div[data-number]").each(function(index) {
+    alert(index);
+    $(this).attr("data-number", index);
+});
