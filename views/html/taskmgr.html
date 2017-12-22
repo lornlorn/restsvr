@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <input id="module" type="hidden" value="taskmgr">
     <div id="title">
         <p>----------任务信息----------</p>
         <label>系统:</label>
@@ -27,20 +28,28 @@
         <div id="jobinfo">
             <div id="step1">
                 <p>----------STEP 1----------</p>
+                <p>
+                    <button id="step1_add" class="stepdtl-add">+</button>
+                    <button id="step1_del" class="stepdtl-del">-</button>
+                </p>
                 <input type="checkbox" id="step1_checkbox">
+                <label data-name="seq">1</label>
                 <label>IP:</label>
-                <input id="step1_ip" name="ip" value="192.168.100.101">
+                <input data-name="ip" name="ip" value="192.168.100.101">
                 <label>端口:</label>
-                <input id="step1_port" name="port" value="22">
+                <input data-name="port" name="port" value="22">
                 <label>用户名:</label>
-                <input id="step1_username" name="username" value="test">
+                <input data-name="username" name="username" value="test">
                 <label>密码:</label>
-                <input id="step1_password" name="password" value="test">
+                <input data-name="password" name="password" value="test">
                 <label>命令:</label>
-                <input id="step1_command" name="command" value="ls -lrt">
+                <input data-name="command" name="command" value="ls -lrt">
             </div>
         </div>
     </div>
+
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/taskmgr.js"></script>
 </body>
 
 </html>

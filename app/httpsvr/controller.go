@@ -49,7 +49,7 @@ func testHandle(res http.ResponseWriter, req *http.Request) {
 
 func htmlHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route HTML : %v\n", req.URL)
-	tmpl, err := template.ParseFiles("views/html/taskmanage.html")
+	tmpl, err := template.ParseFiles("views/html/taskmgr.html")
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
 	}
