@@ -19,30 +19,32 @@
         <label>执行时间表达式:</label>
         <input id="runtime" name="runtime" value="30 * * * *">
     </div>
-    <div id="joblist">
+    <div id="jobinfo">
         <p>----------作业列表----------</p>
         <div id="joboperation">
-            <button id="add">添加步骤</button>
-            <button id="delete">删除步骤</button>
+            <button class="step-add">添加步骤</button>
+            <button class="step-del">删除步骤</button>
         </div>
-        <div id="jobinfo">
+        <div id="joblist">
             <div class="step" data-seq="1">
                 <p>----------STEP 1----------</p>
                 <p>
-                    <button id="step1_add" class="stepdtl-add">+</button>
-                    <button id="step1_del" class="stepdtl-del">-</button>
+                    <button class="stepdtl-add">添加指令</button>
+                    <button class="stepdtl-del">删除指令</button>
                 </p>
-                <input type="checkbox" id="step1_checkbox">
-                <label>IP:</label>
-                <input data-name="ip" name="ip" value="192.168.100.101">
-                <label>端口:</label>
-                <input data-name="port" name="port" value="22">
-                <label>用户名:</label>
-                <input data-name="username" name="username" value="test">
-                <label>密码:</label>
-                <input data-name="password" name="password" value="test">
-                <label>命令:</label>
-                <input data-name="command" name="command" value="ls -lrt">
+                <div class="stepdtl">
+                    <input data-type="check" type="checkbox">
+                    <label>IP:</label>
+                    <input data-type="data" data-name="ip" value="192.168.100.101">
+                    <label>端口:</label>
+                    <input data-type="data" data-name="port" value="22">
+                    <label>用户名:</label>
+                    <input data-type="data" data-name="username" value="test">
+                    <label>密码:</label>
+                    <input data-type="data" data-name="password" value="test">
+                    <label>命令:</label>
+                    <input data-type="data" data-name="command" value="ls -lrt">
+                </div>
             </div>
         </div>
     </div>
