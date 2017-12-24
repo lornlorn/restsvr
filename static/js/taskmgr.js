@@ -25,12 +25,16 @@ $(function () {
     });
 
     $("#joblist").on("click", ".stepdtl-del", function () {
-        var chkcount = $("input[data-type='check']").length;
-        var delcount = $("input[data-type='check']:checkbox:checked").length;
+        var seq = $(this).parent().parent().attr("data-seq");
+        // alert(selectstep);
+        var chkcount = $("div[data-seq='"+seq+"'] input[data-type='check']").length;
+        var delcount = $("div[data-seq='"+seq+"'] input[data-type='check']:checkbox:checked").length;
+        // var chkcount = $("input[data-type='check']").length;
+        // var delcount = $("input[data-type='check']:checkbox:checked").length;
         if (delcount >= chkcount) {
             alert("至少保留一条指令");
         } else {
-            $("input[data-type='check']:checkbox:checked").each(function (index) {
+            $("div[data-seq='"+seq+"'] input[data-type='check']:checkbox:checked").each(function (index) {
                 // alert(index);
                 $(this).parent().remove();
                 // $(this).attr("data-number", index);
