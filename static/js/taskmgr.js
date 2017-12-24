@@ -1,5 +1,4 @@
-var $module = $('#module');
-var $jobinfo = $('#jobinfo');
+// var $module = $('#module');
 
 $(function () {
 
@@ -78,9 +77,9 @@ $(function () {
         var num = $("div.step").length;
         var nextnum = num + 1;
         var html =
-            "<div class=\"step\" data-seq=\"" + nextnum + "\">" +
-            "    <p>----------STEP " + nextnum + "----------</p>" +
-            "    <p>" +
+            "<div class=\"step\" data-seq=\"" + nextnum + "\" data-valid=\"true\">" +
+            "    <p data-name=\"step-title\">----------STEP " + nextnum + "----------</p>" +
+            "    <p data-name=\"step-operation\">" +
             "        <input data-type=\"check\" data-name=\"step-check\" type=\"checkbox\">" +
             "        <button class=\"stepdtl-add\">添加指令</button>" +
             "        <button class=\"stepdtl-del\">删除指令</button>" +
@@ -103,8 +102,16 @@ $(function () {
         $("div#joblist").append(html);
     });
 
-    // 删除步骤
+    // 删除步骤 置步骤为失效
     $("button.step-del").click(function () {
+        var selects = $("div#joblist input[data-name=\"step-check\"]:checkbox:checked");
+        selects.each(function () {
+            var step = $(this).parent().parent();
+            var title = step.children("p[data-name=\"step-title\"]");
+            var title_content = title.text();
+            title.text(title_content + "已删除");
+            step.attr("data-valid","false");
+        });
 
     });
 
