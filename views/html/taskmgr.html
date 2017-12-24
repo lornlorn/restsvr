@@ -16,6 +16,8 @@
         <input id="system" name="system" value="TEST">
         <label>名称:</label>
         <input id="name" name="name" value="测试任务">
+        <label>立即执行:</label>
+        <input id="ifnow" type="checkbox">
         <label>执行时间表达式:</label>
         <input id="runtime" name="runtime" value="30 * * * *">
     </div>
@@ -29,11 +31,12 @@
             <div class="step" data-seq="1">
                 <p>----------STEP 1----------</p>
                 <p>
+                    <input data-type="check" data-name="step-check" type="checkbox">
                     <button class="stepdtl-add">添加指令</button>
                     <button class="stepdtl-del">删除指令</button>
                 </p>
                 <div class="stepdtl">
-                    <input data-type="check" type="checkbox">
+                    <input data-type="check" data-name="stepdtl-check" type="checkbox">
                     <label>IP:</label>
                     <input data-type="data" data-name="ip" value="192.168.100.101">
                     <label>端口:</label>
