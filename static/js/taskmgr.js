@@ -1,4 +1,5 @@
-// var $module = $('#module');
+var $module = $('#module');
+var $submit = $('#submit');
 
 $(function () {
 
@@ -110,7 +111,7 @@ $(function () {
             var title = step.children("p[data-name=\"step-title\"]");
             var title_content = title.text();
             title.text(title_content + "已删除");
-            step.attr("data-valid","false");
+            step.attr("data-valid", "false");
         });
 
     });
@@ -122,6 +123,51 @@ $(function () {
         } else {
             $("#runtime").attr("disabled", false);
         };
+    });
+
+    // 提交
+    $submit.click(function () {
+        var params = {};
+        params['module'] = $module.val();
+        params['data'] = {};
+        $("#joblist .step").each(function (index) {
+            var step = $(this);
+            if (step.attr("data-valid") == "false") {
+                // alert(index);
+            } else if (step.attr("data-valid") == "true") {
+                var valid_step = $(this);
+                var seq = valid_step.attr("data-seq");
+                // console.log(valid_step.children(".stepdtl"));
+                valid_step.children(".stepdtl").each(function () {
+                    console.log($(this));
+                });
+                // params['data'][seq] = v;
+            };
+            // var k = $(this).attr('name');
+            // var v = $(this).val();
+            // params['data'][k] = v;
+        });
+        console.log('REQUEST : ' + JSON.stringify(params));
+
+        // $.ajax({
+        //     url: '/ajax',
+        //     type: 'POST',
+        //     contentType: "application/json; charset=utf-8",
+        //     data: JSON.stringify(params),
+        //     async: 'true',
+        //     dataType: 'json',
+        //     success: function (result) {
+        //         console.log('RESPONSE : ' + JSON.stringify(result));
+        //         $('#status').text('请求成功');
+        //         $('#result').text(result['retcode'] + '|' + result['retmsg']);
+        //     },
+        //     error: function (result) {
+        //         $('#status').text('请求失败');
+        //     },
+        //     complete: function () {
+        //         console.log("Ajax finish");
+        //     },
+        // });
     });
 
 });
