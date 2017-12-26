@@ -4,7 +4,7 @@ var $submit = $('#submit');
 $(function () {
 
     // 添加指令
-    $("#joblist").on("click", ".stepdtl-add", function () {
+    $("#steplist").on("click", ".stepdtl-add", function () {
         var seq = $(this).parent().parent().attr("data-seq");
         var html =
             "<div class=\"stepdtl\">" +
@@ -25,7 +25,7 @@ $(function () {
     });
 
     // 删除指令
-    $("#joblist").on("click", ".stepdtl-del", function () {
+    $("#steplist").on("click", ".stepdtl-del", function () {
         var seq = $(this).parent().parent().attr("data-seq");
         var chkcount = $("div[data-seq='" + seq + "'] input[data-name='stepdtl-check']").length;
         var delcount = $("div[data-seq='" + seq + "'] input[data-name='stepdtl-check']:checkbox:checked").length;
@@ -100,12 +100,12 @@ $(function () {
             "    </div>" +
             "</div>";
 
-        $("div#joblist").append(html);
+        $("div#steplist").append(html);
     });
 
     // 删除步骤 置步骤为失效
     $("button.step-del").click(function () {
-        var selects = $("div#joblist input[data-name=\"step-check\"]:checkbox:checked");
+        var selects = $("div#steplist input[data-name=\"step-check\"]:checkbox:checked");
         selects.each(function () {
             var step = $(this).parent().parent();
             var title = step.children("p[data-name=\"step-title\"]");
@@ -129,24 +129,37 @@ $(function () {
     $submit.click(function () {
         var params = {};
         params['module'] = $module.val();
+        params['user'] = "test";
         params['data'] = {};
-        $("#joblist .step").each(function () {
+        params['data']['jobinfo'] = {};
+        params['data']['jobinfo']['system'] = $("#system").val();
+        params['data']['jobinfo']['name'] = $("#name").val();
+        var ifnow = "";
+        if ($("#ifnow").is(":checked")) {
+            ifnow = "true";
+        } else {
+            ifnow = "false";
+        };
+        params['data']['jobinfo']['ifnow'] = ifnow;
+        params['data']['jobinfo']['runtime'] = $("#runtime").val();
+        params['data']['steplist'] = {};
+        $("#steplist .step").each(function () {
             var step = $(this);
             if (step.attr("data-valid") == "false") {
                 // 跳过删除的步骤
             } else if (step.attr("data-valid") == "true") {
                 var valid_step = $(this);
                 var seq = valid_step.attr("data-seq");
-                params['data'][seq] = {};
+                params['data']['steplist'][seq] = {};
                 valid_step.children(".stepdtl").each(function (index) {
                     var stepdtl_seq = index + 1;
-                    params['data'][seq][stepdtl_seq] = {};
+                    params['data']['steplist'][seq][stepdtl_seq] = {};
                     var stepdtl = $(this);
                     stepdtl.find("input[data-type=\"data\"]").each(function () {
                         var cmd = $(this);
                         var key = cmd.attr("data-name");
                         var value = cmd.val();
-                        params['data'][seq][stepdtl_seq][key] = value;
+                        params['data']['steplist'][seq][stepdtl_seq][key] = value;
                     });
                 });
 

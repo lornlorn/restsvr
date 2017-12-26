@@ -10,7 +10,7 @@
 
 <body>
     <input id="module" type="hidden" value="taskmgr">
-    <div id="title">
+    <div id="jobinfo">
         <p>----------任务信息----------</p>
         <label>系统:</label>
         <input id="system" name="system" value="TEST">
@@ -22,13 +22,13 @@
         <input id="runtime" name="runtime" value="30 * * * *">
         <button id="submit">提交</button>
     </div>
-    <div id="jobinfo">
+    <div id="stepinfo">
         <p>----------作业列表----------</p>
         <div id="joboperation">
             <button class="step-add">添加步骤</button>
             <button class="step-del">删除步骤</button>
         </div>
-        <div id="joblist">
+        <div id="steplist">
             <div class="step" data-seq="1" data-valid="true">
                 <p data-name="step-title">----------STEP 1----------</p>
                 <p data-name="step-operation">
