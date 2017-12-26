@@ -137,11 +137,18 @@ $(function () {
             } else if (step.attr("data-valid") == "true") {
                 var valid_step = $(this);
                 var seq = valid_step.attr("data-seq");
+                params['data'][seq]={}
                 // console.log(valid_step.children(".stepdtl"));
                 valid_step.children(".stepdtl").each(function () {
-                    console.log($(this));
+                    var stepdtl = $(this);
+                    stepdtl.find("input[data-type=\"data\"]").each(function () {
+                        var cmd = $(this);
+                        var key = cmd.attr("data-name");
+                        var value = cmd.val();
+                        params['data'][seq][key] = value;
+                    });
                 });
-                // params['data'][seq] = v;
+
             };
             // var k = $(this).attr('name');
             // var v = $(this).val();
