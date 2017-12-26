@@ -130,22 +130,23 @@ $(function () {
         var params = {};
         params['module'] = $module.val();
         params['data'] = {};
-        $("#joblist .step").each(function (index) {
+        $("#joblist .step").each(function () {
             var step = $(this);
             if (step.attr("data-valid") == "false") {
-                // alert(index);
+                // 跳过删除的步骤
             } else if (step.attr("data-valid") == "true") {
                 var valid_step = $(this);
                 var seq = valid_step.attr("data-seq");
-                params['data'][seq]={}
-                // console.log(valid_step.children(".stepdtl"));
-                valid_step.children(".stepdtl").each(function () {
+                params['data'][seq] = {};
+                valid_step.children(".stepdtl").each(function (index) {
+                    var stepdtl_seq = index + 1;
+                    params['data'][seq][stepdtl_seq] = {};
                     var stepdtl = $(this);
                     stepdtl.find("input[data-type=\"data\"]").each(function () {
                         var cmd = $(this);
                         var key = cmd.attr("data-name");
                         var value = cmd.val();
-                        params['data'][seq][key] = value;
+                        params['data'][seq][stepdtl_seq][key] = value;
                     });
                 });
 

@@ -9,6 +9,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/gorilla/mux"
 )
 
 /*
@@ -22,8 +25,9 @@ func notFoundHandler(res http.ResponseWriter, req *http.Request) {
 	} else if req.URL.Path == "/aaa" {
 		for i := 0; i <= 10; i++ {
 			go fmt.Printf("%v %v\n", req.URL, i)
-			// time.Sleep(1 * time.Second)
+			// time.Sleep(10 * time.Second)
 		}
+		time.Sleep(10 * time.Second)
 		fmt.Fprintln(res, "Route aaa Finish")
 		return
 	}
@@ -49,7 +53,8 @@ func testHandle(res http.ResponseWriter, req *http.Request) {
 
 func htmlHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route HTML : %v\n", req.URL)
-	tmpl, err := template.ParseFiles("views/html/taskmgr.html")
+	vars := mux.Vars(req)
+	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", vars["module"]))
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
 	}

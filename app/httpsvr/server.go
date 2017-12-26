@@ -3,6 +3,9 @@ package httpsvr
 import (
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/gorilla/mux"
 )
 
 /*
@@ -11,19 +14,32 @@ StartHTTP func()
 func StartHTTP() error {
 	log.Println("Start HTTP Server...")
 	log.Println("-> Initialize HTTP Routes...")
-	initRoutes()
+	r := mux.NewRouter()
+	initRoutes(r)
 	log.Println("-> Listen HTTP Port And Serve...")
-	err := http.ListenAndServe(":8888", nil)
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         ":8888",
+		WriteTimeout: 5 * time.Second,
+		ReadTimeout:  5 * time.Second,
+	}
+	// err := http.ListenAndServe(":8888", r)
+	err := srv.ListenAndServe()
 	return err
 }
 
-func initRoutes() {
-	http.HandleFunc("/", notFoundHandler)
-	http.HandleFunc("/index", indexHandle)
-	http.HandleFunc("/test", testHandle)
-	http.HandleFunc("/ajax", ajaxHandler)
-	http.HandleFunc("/redis", redisHandler)
-	http.HandleFunc("/html", htmlHandler)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	// http.Handle("/views/", http.StripPrefix("/views/", http.FileServer(http.Dir("views"))))
+func initRoutes(r *mux.Router) {
+	r.HandleFunc("/index", indexHandle)
+	r.HandleFunc("/test", testHandle)
+	r.HandleFunc("/ajax", ajaxHandler)
+	r.HandleFunc("/redis", redisHandler)
+	r.HandleFunc("/html/{module}", htmlHandler)
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
+	s := r.PathPrefix("/").Subrouter()
+	s.HandleFunc("/", notFoundHandler)
+	s.HandleFunc("/{key}", notFoundHandler)
+
+	// http.HandleFunc("/", notFoundHandler)
+	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 }
