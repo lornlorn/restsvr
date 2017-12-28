@@ -31,7 +31,7 @@ func StartHTTP() error {
 func initRoutes(r *mux.Router) {
 	r.HandleFunc("/index", indexHandle)
 	r.HandleFunc("/test", testHandle)
-	r.HandleFunc("/ajax", ajaxHandler)
+	r.HandleFunc("/ajax/{func}", ajaxHandler)
 	r.HandleFunc("/redis", redisHandler)
 	r.HandleFunc("/html/{module}", htmlHandler)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))

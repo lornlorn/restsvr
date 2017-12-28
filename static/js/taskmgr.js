@@ -38,41 +38,6 @@ $(function () {
         };
     });
 
-    // $("button.stepdtl-add").click(function () {
-    //     var seq = $(this).parent().parent().attr("data-seq"); // $(this)表示获取当前被点击元素的name值
-    //     // alert(value);
-    //     var html =
-    //         "<div class=\"stepdtl\">" +
-    //         "    <input data-type=\"check\" type=\"checkbox\">" +
-    //         "    <label>IP:</label>" +
-    //         "    <input data-type=\"data\" data-name=\"ip\" value=\"192.168.100.101\">" +
-    //         "    <label>端口:</label>" +
-    //         "    <input data-type=\"data\" data-name=\"port\" value=\"22\">" +
-    //         "    <label>用户名:</label>" +
-    //         "    <input data-type=\"data\" data-name=\"username\" value=\"test\">" +
-    //         "    <label>密码:</label>" +
-    //         "    <input data-type=\"data\" data-name=\"password\" value=\"test\">" +
-    //         "    <label>命令:</label>" +
-    //         "    <input data-type=\"data\" data-name=\"command\" value=\"ls -lrt\">" +
-    //         "</div>";
-
-    //     $("div.step[data-seq=" + seq + "]").append(html);
-    // });
-
-    // $("button.stepdtl-del").click(function () {
-    //     var chkcount = $("input[data-type='check']").length;
-    //     var delcount = $("input[data-type='check']:checkbox:checked").length;
-    //     if (delcount >= chkcount) {
-    //         alert("至少保留一条指令");
-    //     } else {
-    //         $("input[data-type='check']:checkbox:checked").each(function (index) {
-    //             // alert(index);
-    //             $(this).parent().remove();
-    //             // $(this).attr("data-number", index);
-    //         });
-    //     };
-    // });
-
     // 添加步骤
     $("button.step-add").click(function () {
         var num = $("div.step").length;
@@ -117,8 +82,8 @@ $(function () {
     });
 
     // "立即执行"选中后置"执行时间表达式"为不可用
-    $("#ifnow").click(function () {
-        if ($("#ifnow").is(":checked")) {
+    $("#iftool").click(function () {
+        if ($("#iftool").is(":checked")) {
             $("#runtime").attr("disabled", true);
         } else {
             $("#runtime").attr("disabled", false);
@@ -134,13 +99,13 @@ $(function () {
         params['data']['jobinfo'] = {};
         params['data']['jobinfo']['system'] = $("#system").val();
         params['data']['jobinfo']['name'] = $("#name").val();
-        var ifnow = "";
-        if ($("#ifnow").is(":checked")) {
-            ifnow = "true";
+        var iftool = "";
+        if ($("#iftool").is(":checked")) {
+            iftool = "true";
         } else {
-            ifnow = "false";
+            iftool = "false";
         };
-        params['data']['jobinfo']['ifnow'] = ifnow;
+        params['data']['jobinfo']['iftool'] = iftool;
         params['data']['jobinfo']['runtime'] = $("#runtime").val();
         params['data']['steplist'] = {};
         $("#steplist .step").each(function () {
