@@ -58,6 +58,10 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	subroute := vars["func"]
 
+	ajaxFuncList := map[string]func(){
+		"addjob": addjob,
+	}
+
 	var ajaxreq models.AjaxReq
 	reqBody, _ := ioutil.ReadAll(req.Body)
 
@@ -71,6 +75,8 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	// Show Request JSON Data
 	log.Println(string(reqBody))
 	log.Printf("Request Data To Struct : %v", ajaxreq)
+
+	ajaxFuncList[subroute]()
 
 	var retcode, retmsg string
 

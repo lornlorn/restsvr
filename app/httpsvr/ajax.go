@@ -1,5 +1,9 @@
 package httpsvr
 
+func addjob() {
+
+}
+
 // func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 // 	log.Printf("Route Ajax : %v\n", req.URL)
 // 	log.Printf("Request Method : %v\n", req.Method)
