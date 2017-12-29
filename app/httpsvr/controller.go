@@ -3,8 +3,10 @@ package httpsvr
 import (
 	"app/models"
 	"app/redisctr"
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -40,19 +42,60 @@ func indexHandle(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, "Route Index : %v\n", req.URL)
 }
 
-func testHandle(res http.ResponseWriter, req *http.Request) {
-	log.Printf("Route Test : %v\n", req.URL)
-	tmpl, err := template.ParseFiles("views/test/test.html")
+func htmlHandler(res http.ResponseWriter, req *http.Request) {
+	log.Printf("Route HTML : %v\n", req.URL)
+	vars := mux.Vars(req)
+	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", vars["module"]))
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
 	}
 	tmpl.Execute(res, nil)
 }
 
-func htmlHandler(res http.ResponseWriter, req *http.Request) {
-	log.Printf("Route HTML : %v\n", req.URL)
+func ajaxHandler(res http.ResponseWriter, req *http.Request) {
+	log.Printf("Route Ajax : %v\n", req.URL)
+	log.Printf("Request Method : %v\n", req.Method)
 	vars := mux.Vars(req)
-	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", vars["module"]))
+	subroute := vars["func"]
+
+	var ajaxreq models.AjaxReq
+	reqBody, _ := ioutil.ReadAll(req.Body)
+
+	err := json.Unmarshal(reqBody, &ajaxreq)
+	defer req.Body.Close()
+	if err != nil {
+		log.Printf("Unmarshal Json Error : %v\n", err)
+		return
+	}
+
+	// Show Request JSON Data
+	log.Println(string(reqBody))
+	log.Printf("Request Data To Struct : %v", ajaxreq)
+
+	var retcode, retmsg string
+
+	if ajaxreq.Data["username"] == "hqdiaolei" && ajaxreq.Data["password"] == "123456Aa" {
+		retcode = "OK"
+		retmsg = "成功"
+	} else {
+		retcode = "FAIL"
+		retmsg = "失败"
+	}
+
+	ajaxres := models.AjaxRes{RetCode: retcode, RetMsg: retmsg}
+	log.Printf("Response Data To Struct : %v", ajaxres)
+
+	retdata, err := json.Marshal(ajaxres)
+	if err != nil {
+		log.Printf("Marshal Json Error : %v\n", err)
+	}
+
+	res.Write(retdata)
+}
+
+func testHandle(res http.ResponseWriter, req *http.Request) {
+	log.Printf("Route Test : %v\n", req.URL)
+	tmpl, err := template.ParseFiles("views/test/test.html")
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
 	}
@@ -100,36 +143,4 @@ func redisHandler(res http.ResponseWriter, req *http.Request) {
 		log.Printf("Redis Connector Close Failed : %v\n", err)
 	}
 	fmt.Fprintf(res, "Route Redis Finish : %v", reply)
-}
-
-func redisSetAndGet(oper string, key string, value interface{}) error {
-	connStr := models.RedisConnector{
-		Proto: "tcp",
-		Addr:  "127.0.0.1",
-		Port:  6379,
-	}
-	redisConn, err := redisctr.Connect(connStr)
-	if err != nil {
-		log.Printf("Redis Connect Failed : %v\n", err)
-	}
-
-	redisClient := redisctr.RedisClient{Client: redisConn}
-
-	switch oper {
-	case "GET":
-		reply, _ := redisClient.Get(key)
-		log.Println(reply)
-	case "SET":
-		redisClient.Set(key, value)
-	}
-	if err != nil {
-		log.Printf("Redis Get&Set Failed : %v\n", err)
-		return err
-	}
-	err = redisClient.Close()
-	if err != nil {
-		log.Printf("Redis Close Failed : %v\n", err)
-		return err
-	}
-	return nil
 }
