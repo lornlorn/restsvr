@@ -3,6 +3,7 @@ package httpsvr
 import (
 	"app/models"
 	"app/redisctr"
+	"app/utils"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -58,7 +59,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	subroute := vars["func"]
 
-	ajaxFuncList := map[string]func(){
+	ajaxFuncList := map[string]interface{}{
 		"addjob": addjob,
 	}
 
@@ -76,7 +77,11 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	log.Println(string(reqBody))
 	log.Printf("Request Data To Struct : %v", ajaxreq)
 
-	ajaxFuncList[subroute]()
+	ret, err := utils.ReflectCall(ajaxFuncList, subroute, ajaxreq)
+	if err != nil {
+		log.Fatalln("Method [%v] invoke error : %v", subroute, err)
+	}
+	log.Println(ret)
 
 	var retcode, retmsg string
 
@@ -88,7 +93,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		retmsg = "失败"
 	}
 
-	ajaxres := models.AjaxRes{RetCode: retcode, RetMsg: retmsg}
+	ajaxres := models.AjaxRes{RetCode: retcode, RetMsg: retmsg, RetData: ""}
 	log.Printf("Response Data To Struct : %v", ajaxres)
 
 	retdata, err := json.Marshal(ajaxres)

@@ -135,25 +135,27 @@ $(function () {
         });
         console.log('REQUEST : ' + JSON.stringify(params));
 
-        // $.ajax({
-        //     url: '/ajax',
-        //     type: 'POST',
-        //     contentType: "application/json; charset=utf-8",
-        //     data: JSON.stringify(params),
-        //     async: 'true',
-        //     dataType: 'json',
-        //     success: function (result) {
-        //         console.log('RESPONSE : ' + JSON.stringify(result));
-        //         $('#status').text('请求成功');
-        //         $('#result').text(result['retcode'] + '|' + result['retmsg']);
-        //     },
-        //     error: function (result) {
-        //         $('#status').text('请求失败');
-        //     },
-        //     complete: function () {
-        //         console.log("Ajax finish");
-        //     },
-        // });
+        $.ajax({
+            url: '/ajax/addjob',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(params),
+            async: 'true',
+            dataType: 'json',
+            success: function (result) {
+                console.log('RESPONSE : ' + JSON.stringify(result));
+                // $('#status').text('请求成功');
+                // $('#result').text(result['retcode'] + '|' + result['retmsg']);
+                console.log("请求成功");
+            },
+            error: function (result) {
+                // $('#status').text('请求失败');
+                console.log("请求失败");
+            },
+            complete: function () {
+                console.log("Ajax finish");
+            },
+        });
     });
 
 });
