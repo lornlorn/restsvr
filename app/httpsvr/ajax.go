@@ -1,7 +1,13 @@
 package httpsvr
 
-func addjob() {
+import (
+	"app/models"
+	"log"
+)
 
+func addjob(ajaxreq models.AjaxReq) {
+	log.Println("ajax.addjob")
+	log.Println(ajaxreq)
 }
 
 // func ajaxHandler(res http.ResponseWriter, req *http.Request) {

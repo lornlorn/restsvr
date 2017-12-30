@@ -10,7 +10,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -28,13 +27,14 @@ func notFoundHandler(res http.ResponseWriter, req *http.Request) {
 			go fmt.Printf("%v %v\n", req.URL, i)
 			// time.Sleep(10 * time.Second)
 		}
-		time.Sleep(10 * time.Second)
+		// time.Sleep(10 * time.Second)
 		fmt.Fprintln(res, "Route aaa Finish")
 		return
 	}
 	tmpl, err := template.ParseFiles("views/error/404.html")
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
+		return
 	}
 	tmpl.Execute(res, req.URL)
 }
@@ -46,9 +46,11 @@ func indexHandle(res http.ResponseWriter, req *http.Request) {
 func htmlHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route HTML : %v\n", req.URL)
 	vars := mux.Vars(req)
-	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", vars["module"]))
+	subroute := vars["module"]
+	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", subroute))
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
+		return
 	}
 	tmpl.Execute(res, nil)
 }
@@ -79,21 +81,23 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 
 	ret, err := utils.ReflectCall(ajaxFuncList, subroute, ajaxreq)
 	if err != nil {
-		log.Fatalln("Method [%v] invoke error : %v", subroute, err)
+		log.Fatalf("Method [%v] invoke error : %v\n", subroute, err)
 	}
 	log.Println(ret)
 
 	var retcode, retmsg string
 
-	if ajaxreq.Data["username"] == "hqdiaolei" && ajaxreq.Data["password"] == "123456Aa" {
-		retcode = "OK"
-		retmsg = "成功"
-	} else {
-		retcode = "FAIL"
-		retmsg = "失败"
-	}
+	// if ajaxreq.Data["username"] == "hqdiaolei" && ajaxreq.Data["password"] == "123456Aa" {
+	// 	retcode = "OK"
+	// 	retmsg = "成功"
+	// } else {
+	// 	retcode = "FAIL"
+	// 	retmsg = "失败"
+	// }
+	retcode = "OK"
+	retmsg = "成功"
 
-	ajaxres := models.AjaxRes{RetCode: retcode, RetMsg: retmsg, RetData: ""}
+	ajaxres := models.AjaxRes{RetCode: retcode, RetMsg: retmsg}
 	log.Printf("Response Data To Struct : %v", ajaxres)
 
 	retdata, err := json.Marshal(ajaxres)
