@@ -1,0 +1,32 @@
+// json解析为struct
+var ajaxreq models.AjaxReq
+reqBody, _ := ioutil.ReadAll(req.Body)
+err := json.Unmarshal(reqBody, &ajaxreq)
+defer req.Body.Close()
+if err != nil {
+	log.Printf("Unmarshal Json Error : %v\n", err)
+	return
+}
+// Show Request JSON Data
+log.Println(string(reqBody))
+log.Printf("Request Data To Struct : %v", ajaxreq)
+
+// struct组合为json
+retcode = "OK"
+retmsg = "成功"
+ajaxres := models.AjaxResMessage{RetCode: retcode, RetMsg: retmsg}
+log.Printf("Response Data To Struct : %v", ajaxres)
+retdata, err := json.Marshal(ajaxres)
+if err != nil {
+	log.Printf("Marshal Json Error : %v\n", err)
+}
+
+// 自带http服务器创建方法
+func main() {
+    http.HandleFunc("/", indexHandle)
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+    log.Fatalln(http.ListenAndServe(":8888", nil))
+}
+func indexHandle(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(res, "Route Index : %v\n", req.URL)
+}

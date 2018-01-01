@@ -11,6 +11,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/tidwall/gjson"
+
 	"github.com/gorilla/mux"
 )
 
@@ -58,28 +60,21 @@ func htmlHandler(res http.ResponseWriter, req *http.Request) {
 func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route Ajax : %v\n", req.URL)
 	log.Printf("Request Method : %v\n", req.Method)
+
+	// 获取子路由
 	vars := mux.Vars(req)
 	subroute := vars["func"]
 
+	// 定义子路由反射调用函数
 	ajaxFuncList := map[string]interface{}{
-		"addjob": addjob,
+		"addtask": addtask,
 	}
 
-	var ajaxreq models.AjaxReq
 	reqBody, _ := ioutil.ReadAll(req.Body)
 
-	err := json.Unmarshal(reqBody, &ajaxreq)
-	defer req.Body.Close()
-	if err != nil {
-		log.Printf("Unmarshal Json Error : %v\n", err)
-		return
-	}
+	value := gjson.Get(string(reqBody), "module")
 
-	// Show Request JSON Data
-	log.Println(string(reqBody))
-	log.Printf("Request Data To Struct : %v", ajaxreq)
-
-	ret, err := utils.ReflectCall(ajaxFuncList, subroute, ajaxreq)
+	ret, err := utils.ReflectCall(ajaxFuncList, subroute, value.String())
 	if err != nil {
 		log.Fatalf("Method [%v] invoke error : %v\n", subroute, err)
 	}
@@ -87,17 +82,10 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 
 	var retcode, retmsg string
 
-	// if ajaxreq.Data["username"] == "hqdiaolei" && ajaxreq.Data["password"] == "123456Aa" {
-	// 	retcode = "OK"
-	// 	retmsg = "成功"
-	// } else {
-	// 	retcode = "FAIL"
-	// 	retmsg = "失败"
-	// }
 	retcode = "OK"
 	retmsg = "成功"
 
-	ajaxres := models.AjaxRes{RetCode: retcode, RetMsg: retmsg}
+	ajaxres := models.AjaxResMessage{RetCode: retcode, RetMsg: retmsg}
 	log.Printf("Response Data To Struct : %v", ajaxres)
 
 	retdata, err := json.Marshal(ajaxres)

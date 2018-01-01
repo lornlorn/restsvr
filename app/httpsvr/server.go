@@ -29,16 +29,21 @@ func StartHTTP() error {
 }
 
 func initRoutes(r *mux.Router) {
+	// normal router
 	r.HandleFunc("/index", indexHandle)
 
+	// dynamic router
 	r.HandleFunc("/ajax/{func}", ajaxHandler)
 	r.HandleFunc("/html/{module}", htmlHandler)
 
+	// test
 	r.HandleFunc("/redis", redisHandler)
 	r.HandleFunc("/test", testHandle)
 
+	// static resource
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
+	// subrouter
 	s := r.PathPrefix("/").Subrouter()
 	s.HandleFunc("/", notFoundHandler)
 	s.HandleFunc("/{key}", notFoundHandler)
