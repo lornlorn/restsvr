@@ -70,11 +70,17 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		"addtask": addtask,
 	}
 
+	// 获取请求包体(json数据)
 	reqBody, _ := ioutil.ReadAll(req.Body)
+	// 获取当前用户
+	user := gjson.Get(string(reqBody), "user")
 
-	value := gjson.Get(string(reqBody), "module")
+	checkresult := utils.CheckAjaxPermission(subroute, user.String())
+	if !checkresult {
+		fmt.Fprintf(res, "User [%v] permission deny", user.String())
+	}
 
-	ret, err := utils.ReflectCall(ajaxFuncList, subroute, value.String())
+	ret, err := utils.ReflectCall(ajaxFuncList, subroute, user.String())
 	if err != nil {
 		log.Fatalf("Method [%v] invoke error : %v\n", subroute, err)
 	}
