@@ -80,7 +80,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(res, "User [%v] permission deny", user.String())
 	}
 
-	ret, err := utils.ReflectCall(ajaxFuncList, subroute, user.String())
+	ret, err := utils.ReflectCall(ajaxFuncList, subroute, reqBody)
 	if err != nil {
 		log.Fatalf("Method [%v] invoke error : %v\n", subroute, err)
 	}
