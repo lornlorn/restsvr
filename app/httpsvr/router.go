@@ -75,11 +75,13 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	// 获取当前用户
 	user := gjson.Get(string(reqBody), "user")
 
+	// 调用Ajax权限检查
 	checkresult := utils.CheckAjaxPermission(subroute, user.String())
 	if !checkresult {
 		fmt.Fprintf(res, "User [%v] permission deny", user.String())
 	}
 
+	// 调用反射方法
 	ret, err := utils.ReflectCall(ajaxFuncList, subroute, reqBody)
 	if err != nil {
 		log.Fatalf("Method [%v] invoke error : %v\n", subroute, err)
