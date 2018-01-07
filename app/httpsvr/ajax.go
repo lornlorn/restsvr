@@ -4,8 +4,8 @@ import (
 	"log"
 )
 
-func addtask(reqBody []byte) (string, string) {
+func addtask(reqBody []byte) bool {
 	log.Println("ajax.addtask")
-	log.Println(reqBody)
-	return "ok", ""
+	log.Println(string(reqBody))
+	return true
 }

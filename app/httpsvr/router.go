@@ -70,38 +70,84 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		"addtask": addtask,
 	}
 
+	// 定义返回值
+	// var retcode, retmsg string
+
 	// 获取请求包体(json数据)
-	reqBody, _ := ioutil.ReadAll(req.Body)
+	reqBody, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		errmsg := fmt.Sprintf("Request Body Read Failed : %v\n", err)
+		log.Println(errmsg)
+		retdata := ajaxMsgToJSON("0001", errmsg)
+		ajaxResponse(res, retdata)
+		return
+	}
 	// 获取当前用户
 	user := gjson.Get(string(reqBody), "user")
 
 	// 调用Ajax权限检查
 	checkresult := utils.CheckAjaxPermission(subroute, user.String())
 	if !checkresult {
-		fmt.Fprintf(res, "User [%v] permission deny", user.String())
+		errmsg := fmt.Sprintf("User [%v] Permission Deny", user.String())
+		log.Println(errmsg)
+		retdata := ajaxMsgToJSON("0002", errmsg)
+		ajaxResponse(res, retdata)
+		return
 	}
 
 	// 调用反射方法
 	ret, err := utils.ReflectCall(ajaxFuncList, subroute, reqBody)
 	if err != nil {
-		log.Fatalf("Method [%v] invoke error : %v\n", subroute, err)
+		errmsg := fmt.Sprintf("Method [%v] Invoke Error : %v\n", subroute, err)
+		log.Println(errmsg)
+		retdata := ajaxMsgToJSON("0003", errmsg)
+		ajaxResponse(res, retdata)
+		return
 	}
-	log.Println(ret)
+	// 判断返回值数量 1个为bool类型表示执行是否成功 2个为(bool,[]byte)表示返回数据
+	switch len(ret) {
+	case 1:
+		if ret[0].Type().String() == "bool" {
+			if ret[0].Bool() {
+				retdata := ajaxMsgToJSON("0000", "成功")
+				ajaxResponse(res, retdata)
+			} else {
+				retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
+				ajaxResponse(res, retdata)
+				return
+			}
+		}
+	case 2:
 
-	var retcode, retmsg string
+	default:
+	}
 
-	retcode = "OK"
-	retmsg = "成功"
+	return
 
+	// 成功应答
+	// retdata := ajaxMsgToJSON("0000", "成功")
+	// ajaxResponse(res, retdata)
+}
+
+// Ajax Message {RetCode, RetMsg} To JSON
+func ajaxMsgToJSON(retcode string, retmsg string) []byte {
 	ajaxres := models.AjaxResMessage{RetCode: retcode, RetMsg: retmsg}
 	log.Printf("Response Data To Struct : %v", ajaxres)
-
 	retdata, err := json.Marshal(ajaxres)
 	if err != nil {
 		log.Printf("Marshal Json Error : %v\n", err)
 	}
+	return retdata
+}
 
-	res.Write(retdata)
+// Ajax Return Data To JSON
+func ajaxDataToJSON(data ...interface{}) []byte {
+	return
+}
+
+// AjaxResponse
+func ajaxResponse(response http.ResponseWriter, retdata []byte) {
+	response.Write(retdata)
 }
 
 func testHandle(res http.ResponseWriter, req *http.Request) {

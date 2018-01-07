@@ -10,9 +10,16 @@ type AjaxReq struct {
 }
 
 /*
-AjaxRes struct
+AjaxResMessage struct
 */
 type AjaxResMessage struct {
 	RetCode string `json:"retcode"`
 	RetMsg  string `json:"retmsg"`
+}
+
+/*
+AjaxResData struct
+*/
+type AjaxResData struct {
+	RetData interface{} `json:"retdata"`
 }
