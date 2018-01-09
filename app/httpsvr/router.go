@@ -142,7 +142,7 @@ func ajaxMsgToJSON(retcode string, retmsg string) []byte {
 
 // Ajax Return Data To JSON
 func ajaxDataToJSON(data ...interface{}) []byte {
-	return
+	return []byte("ajaxDataToJSON")
 }
 
 // AjaxResponse
