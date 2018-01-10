@@ -68,6 +68,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	// 定义子路由反射调用函数
 	ajaxFuncList := map[string]interface{}{
 		"addtask": addtask,
+		"test":    test,
 	}
 
 	// 定义返回值
@@ -104,22 +105,34 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		ajaxResponse(res, retdata)
 		return
 	}
-	// 判断返回值数量 1个为bool类型表示执行是否成功 2个为(bool,[]byte)表示返回数据
+	// 判断返回值类型及数量
+	// 1个返回值直接返回JSON数据([]byte)
+	// 2个返回值为返回码及返回消息(string, string)
 	switch len(ret) {
 	case 1:
-		if ret[0].Type().String() == "bool" {
-			if ret[0].Bool() {
-				retdata := ajaxMsgToJSON("0000", "成功")
-				ajaxResponse(res, retdata)
-			} else {
-				retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
-				ajaxResponse(res, retdata)
-				return
-			}
+		log.Println(ret[0].Type().String())
+		if ret[0].Type().String() == "byte" {
+			retdata := ajaxDataToJSON(ret[0].String())
+			ajaxResponse(res, retdata)
+
+		} else {
+			retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
+			ajaxResponse(res, retdata)
+
 		}
 	case 2:
+		if ret[0].Type().String() == "string" && ret[1].Type().String() == "string" {
+			retdata := ajaxMsgToJSON(ret[0].String(), ret[1].String())
+			ajaxResponse(res, retdata)
 
+		} else {
+			retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
+			ajaxResponse(res, retdata)
+
+		}
 	default:
+		retdata := ajaxMsgToJSON("0005", "反射方法返回值数量不正确")
+		ajaxResponse(res, retdata)
 	}
 
 	return
@@ -142,7 +155,11 @@ func ajaxMsgToJSON(retcode string, retmsg string) []byte {
 
 // Ajax Return Data To JSON
 func ajaxDataToJSON(data ...interface{}) []byte {
-	return []byte("ajaxDataToJSON")
+	retdata, err := json.Marshal(data)
+	if err != nil {
+		log.Printf("Marshal Json Error : %v\n", err)
+	}
+	return retdata
 }
 
 // AjaxResponse

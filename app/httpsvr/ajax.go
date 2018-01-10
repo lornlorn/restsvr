@@ -6,7 +6,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func addtask(reqBody []byte) bool {
+func addtask(reqBody []byte) (string, string) {
 	log.Println("请求JSON正文:")
 	log.Println(string(reqBody))
 	system := gjson.Get(string(reqBody), "data.jobinfo.system")
@@ -23,5 +23,11 @@ func addtask(reqBody []byte) bool {
 		return true
 	})
 	log.Printf("系统名称 : %v\n", system.String())
-	return true
+	return "0000", ""
+}
+
+func test(reqBody []byte) []byte {
+	log.Println("请求JSON正文:")
+	log.Println(string(reqBody))
+	return []byte("test")
 }
