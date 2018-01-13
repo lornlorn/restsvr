@@ -106,13 +106,13 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	// 判断返回值类型及数量
-	// 1个返回值直接返回JSON数据([]byte)
-	// 2个返回值为返回码及返回消息(string, string)
+	// 2个返回值 标识(JSON)、JSON数据(string, []byte)
+	// 3个返回值 标识(MSG)、返回码、返回消息(string, string, string)
 	switch len(ret) {
-	case 1:
-		log.Println(ret[0].Type().String())
-		if ret[0].Type().String() == "byte" {
-			retdata := ajaxDataToJSON(ret[0].String())
+	case 2:
+		if ret[0].Type().String() == "string" && ret[0].String() == "JSON" {
+			// retdata := ret[1].Bytes()
+			retdata := ajaxDataToJSON(ret[1].Bytes())
 			ajaxResponse(res, retdata)
 
 		} else {
@@ -120,9 +120,9 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 			ajaxResponse(res, retdata)
 
 		}
-	case 2:
-		if ret[0].Type().String() == "string" && ret[1].Type().String() == "string" {
-			retdata := ajaxMsgToJSON(ret[0].String(), ret[1].String())
+	case 3:
+		if ret[0].Type().String() == "string" && ret[1].Type().String() == "string" && ret[2].Type().String() == "string" && ret[0].String() == "MSG" {
+			retdata := ajaxMsgToJSON(ret[1].String(), ret[2].String())
 			ajaxResponse(res, retdata)
 
 		} else {
@@ -154,10 +154,17 @@ func ajaxMsgToJSON(retcode string, retmsg string) []byte {
 }
 
 // Ajax Return Data To JSON
-func ajaxDataToJSON(data ...interface{}) []byte {
-	retdata, err := json.Marshal(data)
-	if err != nil {
-		log.Printf("Marshal Json Error : %v\n", err)
+func ajaxDataToJSON(data interface{}) []byte {
+	var retdata []byte
+	var err error
+	switch data.(type) {
+	case []byte:
+		retdata = data.([]byte)
+	default:
+		retdata, err = json.Marshal(data)
+		if err != nil {
+			log.Printf("Marshal Json Error : %v\n", err)
+		}
 	}
 	return retdata
 }

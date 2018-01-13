@@ -1,12 +1,13 @@
 package httpsvr
 
 import (
+	"encoding/json"
 	"log"
 
 	"github.com/tidwall/gjson"
 )
 
-func addtask(reqBody []byte) (string, string) {
+func addtask(reqBody []byte) (string, string, string) {
 	log.Println("请求JSON正文:")
 	log.Println(string(reqBody))
 	system := gjson.Get(string(reqBody), "data.jobinfo.system")
@@ -23,11 +24,16 @@ func addtask(reqBody []byte) (string, string) {
 		return true
 	})
 	log.Printf("系统名称 : %v\n", system.String())
-	return "0000", ""
+	return "MSG", "0000", ""
 }
 
-func test(reqBody []byte) []byte {
+func test(reqBody []byte) (string, []byte) {
 	log.Println("请求JSON正文:")
 	log.Println(string(reqBody))
-	return []byte("test")
+	res := map[string]string{"aaa": "test"}
+	ret, err := json.Marshal(res)
+	if err != nil {
+		log.Printf("Marshal Json Error : %v\n", err)
+	}
+	return "JSON", ret
 }
