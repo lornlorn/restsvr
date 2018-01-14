@@ -52,6 +52,15 @@ func htmlHandler(res http.ResponseWriter, req *http.Request) {
 	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", subroute))
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
+
+		//二级子路由模板不存在返回404页面
+		tmpl, err := template.ParseFiles("views/error/404.html")
+		if err != nil {
+			log.Printf("Parse Error : %v\n", err)
+			return
+		}
+		tmpl.Execute(res, req.URL)
+
 		return
 	}
 	tmpl.Execute(res, nil)
@@ -83,6 +92,8 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		ajaxResponse(res, retdata)
 		return
 	}
+	log.Println("Request JSON Content :")
+	log.Println(string(reqBody))
 	// 获取当前用户
 	user := gjson.Get(string(reqBody), "user")
 
@@ -112,13 +123,11 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	case 2:
 		if ret[0].Type().String() == "string" && ret[0].String() == "JSON" {
 			// retdata := ret[1].Bytes()
-			retdata := ajaxDataToJSON(ret[1].Bytes())
-			ajaxResponse(res, retdata)
-
+			// retdata := ajaxDataToJSON(ret[1].Bytes())
+			ajaxResponse(res, ret[1].Bytes())
 		} else {
 			retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
 			ajaxResponse(res, retdata)
-
 		}
 	case 3:
 		if ret[0].Type().String() == "string" && ret[1].Type().String() == "string" && ret[2].Type().String() == "string" && ret[0].String() == "MSG" {
@@ -143,17 +152,13 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 // Ajax Message {RetCode, RetMsg} To JSON
-func ajaxMsgToJSON(retcode string, retmsg string) []byte {
+func ajaxMsgToJSON(retcode string, retmsg string) models.AjaxResMessage {
 	ajaxres := models.AjaxResMessage{RetCode: retcode, RetMsg: retmsg}
-	log.Printf("Response Data To Struct : %v", ajaxres)
-	retdata, err := json.Marshal(ajaxres)
-	if err != nil {
-		log.Printf("Marshal Json Error : %v\n", err)
-	}
-	return retdata
+	return ajaxres
 }
 
 // Ajax Return Data To JSON
+/* Unused
 func ajaxDataToJSON(data interface{}) []byte {
 	var retdata []byte
 	var err error
@@ -168,9 +173,28 @@ func ajaxDataToJSON(data interface{}) []byte {
 	}
 	return retdata
 }
+*/
 
 // AjaxResponse
-func ajaxResponse(response http.ResponseWriter, retdata []byte) {
+func ajaxResponse(response http.ResponseWriter, retobj interface{}) {
+	var retdata []byte
+	var err error
+	switch retobj.(type) {
+	case []byte:
+		go func(b []byte) {
+			log.Println("Response JSON Data :")
+			str := string(b[:])
+			log.Println(str)
+		}(retobj.([]byte))
+		// log.Printf("Response Data : %v", retobj)
+		retdata = retobj.([]byte)
+	default:
+		log.Printf("Response Data To JSON : %v", retobj)
+		retdata, err = json.Marshal(retobj)
+		if err != nil {
+			log.Printf("Marshal Json Error : %v\n", err)
+		}
+	}
 	response.Write(retdata)
 }
 

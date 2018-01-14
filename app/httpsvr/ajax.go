@@ -1,15 +1,15 @@
 package httpsvr
 
 import (
+	"app/utils"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/tidwall/gjson"
 )
 
 func addtask(reqBody []byte) (string, string, string) {
-	log.Println("请求JSON正文:")
-	log.Println(string(reqBody))
 	system := gjson.Get(string(reqBody), "data.jobinfo.system")
 	steplist := gjson.Get(string(reqBody), "data.steplist")
 	steplist.ForEach(func(key, value gjson.Result) bool {
@@ -28,10 +28,19 @@ func addtask(reqBody []byte) (string, string, string) {
 }
 
 func test(reqBody []byte) (string, []byte) {
-	log.Println("请求JSON正文:")
-	log.Println(string(reqBody))
-	res := map[string]string{"aaa": "test"}
-	ret, err := json.Marshal(res)
+	// var resflag string
+	resdata := make(map[string]string)
+	uid, err := utils.GetUniqueID()
+	if err != nil {
+		errmsg := fmt.Sprintf("Get Unique ID Failed : %v", err)
+		log.Println(errmsg)
+		// resflag = "MSG"
+		resdata["retcode"] = "0006"
+		resdata["retmsg"] = "获取UID失败"
+	} else {
+		resdata["uid"] = uid
+	}
+	ret, err := json.Marshal(resdata)
 	if err != nil {
 		log.Printf("Marshal Json Error : %v\n", err)
 	}
