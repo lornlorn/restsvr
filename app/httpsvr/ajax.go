@@ -9,7 +9,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func addtask(reqBody []byte) (string, string, string) {
+func addtask(reqBody []byte) []byte {
 	system := gjson.Get(string(reqBody), "data.jobinfo.system")
 	steplist := gjson.Get(string(reqBody), "data.steplist")
 	steplist.ForEach(func(key, value gjson.Result) bool {
@@ -24,7 +24,8 @@ func addtask(reqBody []byte) (string, string, string) {
 		return true
 	})
 	log.Printf("系统名称 : %v\n", system.String())
-	return "MSG", "0000", ""
+	retdata, _ := utils.Convert2JSON(genResMsg("0000", ""))
+	return retdata
 }
 
 func test(reqBody []byte) (string, []byte) {

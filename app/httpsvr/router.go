@@ -88,7 +88,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		errmsg := fmt.Sprintf("Request Body Read Failed : %v\n", err)
 		log.Println(errmsg)
-		retdata := ajaxMsgToJSON("0001", errmsg)
+		retdata := genResMsg("0001", errmsg)
 		ajaxResponse(res, retdata)
 		return
 	}
@@ -102,7 +102,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	if !checkresult {
 		errmsg := fmt.Sprintf("User [%v] Permission Deny", user.String())
 		log.Println(errmsg)
-		retdata := ajaxMsgToJSON("0002", errmsg)
+		retdata := genResMsg("0002", errmsg)
 		ajaxResponse(res, retdata)
 		return
 	}
@@ -112,47 +112,30 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		errmsg := fmt.Sprintf("Method [%v] Invoke Error : %v\n", subroute, err)
 		log.Println(errmsg)
-		retdata := ajaxMsgToJSON("0003", errmsg)
+		retdata := genResMsg("0003", errmsg)
 		ajaxResponse(res, retdata)
 		return
 	}
 	// 判断返回值类型及数量
-	// 2个返回值 标识(JSON)、JSON数据(string, []byte)
-	// 3个返回值 标识(MSG)、返回码、返回消息(string, string, string)
+	// 返回JSON数据 ([]byte(map[]...))
+	// 返回应答信息 ([]byte({retcode, retmsg}))
 	switch len(ret) {
-	case 2:
-		if ret[0].Type().String() == "string" && ret[0].String() == "JSON" {
-			// retdata := ret[1].Bytes()
-			// retdata := ajaxDataToJSON(ret[1].Bytes())
-			ajaxResponse(res, ret[1].Bytes())
-		} else {
-			retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
-			ajaxResponse(res, retdata)
-		}
-	case 3:
-		if ret[0].Type().String() == "string" && ret[1].Type().String() == "string" && ret[2].Type().String() == "string" && ret[0].String() == "MSG" {
-			retdata := ajaxMsgToJSON(ret[1].String(), ret[2].String())
-			ajaxResponse(res, retdata)
-
-		} else {
-			retdata := ajaxMsgToJSON("0004", "反射方法返回值类型不一致")
-			ajaxResponse(res, retdata)
-
-		}
+	case 1:
+		ajaxResponse(res, ret[0].Bytes())
 	default:
-		retdata := ajaxMsgToJSON("0005", "反射方法返回值数量不正确")
+		retdata := genResMsg("0005", "反射方法返回值数量不正确")
 		ajaxResponse(res, retdata)
 	}
 
 	return
 
 	// 成功应答
-	// retdata := ajaxMsgToJSON("0000", "成功")
+	// retdata := genResMsg("0000", "成功")
 	// ajaxResponse(res, retdata)
 }
 
 // Ajax Message {RetCode, RetMsg} To JSON
-func ajaxMsgToJSON(retcode string, retmsg string) models.AjaxResMessage {
+func genResMsg(retcode string, retmsg string) models.AjaxResMessage {
 	ajaxres := models.AjaxResMessage{RetCode: retcode, RetMsg: retmsg}
 	return ajaxres
 }

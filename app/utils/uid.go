@@ -8,14 +8,14 @@ import (
 	"io"
 )
 
-// GetMd5String 生成32位md5字串
+// GetMd5String 生成32位MD5字符串
 func GetMd5String(s string) string {
 	newmd5 := md5.New()
 	newmd5.Write([]byte(s))
 	return hex.EncodeToString(newmd5.Sum(nil))
 }
 
-// GetUniqueID 生成Guid字串
+// GetUniqueID 生成UID唯一标识
 func GetUniqueID() (string, error) {
 	newbyte := make([]byte, 48)
 
