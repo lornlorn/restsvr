@@ -29,7 +29,7 @@ func addtask(reqBody []byte) []byte {
 	return retdata
 }
 
-func test(reqBody []byte) (string, []byte) {
+func test(reqBody []byte) []byte {
 	// var resflag string
 	resdata := make(map[string]string)
 	uid, err := utils.GetUniqueID()
@@ -46,5 +46,5 @@ func test(reqBody []byte) (string, []byte) {
 	if err != nil {
 		log.Printf("Marshal Json Error : %v\n", err)
 	}
-	return "JSON", ret
+	return ret
 }
