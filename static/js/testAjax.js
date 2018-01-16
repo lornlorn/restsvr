@@ -42,4 +42,27 @@ $(function () {
             },
         });
     });
+
+    $('#editable-select').editableSelect({
+        filter: false,
+        effects: 'fade',
+        duration: 200,
+    });
+
+    $('#sub-select').editableSelect({
+        filter: false,
+        effects: 'fade',
+        duration: 200,
+    });
+
+
+    $('#editable-select').on('select.editable-select', function (element) {
+        // do something...
+        console.log($(this).val());
+        var value = $(this).val();
+        $('#sub-select').editableSelect('clear');
+        $('#sub-select').val("");
+        $('#sub-select').editableSelect('add', value);
+});
+
 });

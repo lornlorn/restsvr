@@ -2,7 +2,7 @@ package httpsvr
 
 import (
 	"app/models"
-	"app/redisctr"
+	"app/redis"
 	"app/utils"
 	"encoding/json"
 	"fmt"
