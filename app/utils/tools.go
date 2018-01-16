@@ -11,15 +11,10 @@ func Convert2JSON(data interface{}) ([]byte, error) {
 	var err error
 	switch data.(type) {
 	case []byte:
-		go func(b []byte) {
-			log.Println("Response JSON Data :")
-			str := string(b[:])
-			log.Println(str)
-		}(data.([]byte))
-		// log.Printf("Response Data : %v", data)
+		log.Println("Convert To JSON args []byte")
 		retdata = data.([]byte)
 	default:
-		log.Printf("Response Data To JSON : %v", data)
+		log.Println("Convert To JSON args not []byte")
 		retdata, err = json.Marshal(data)
 		if err != nil {
 			log.Printf("Marshal Json Error : %v\n", err)

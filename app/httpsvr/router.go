@@ -116,7 +116,8 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		ajaxResponse(res, retdata)
 		return
 	}
-	// 判断返回值类型及数量
+	// 处理反射方法返回值 规定必须返回JSON格式数据([]byte)
+	// 例如
 	// 返回JSON数据 ([]byte(map[]...))
 	// 返回应答信息 ([]byte({retcode, retmsg}))
 	switch len(ret) {

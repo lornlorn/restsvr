@@ -10,6 +10,7 @@ import (
 )
 
 func addtask(reqBody []byte) []byte {
+	var retdata []byte
 	system := gjson.Get(string(reqBody), "data.jobinfo.system")
 	steplist := gjson.Get(string(reqBody), "data.steplist")
 	steplist.ForEach(func(key, value gjson.Result) bool {
@@ -24,7 +25,7 @@ func addtask(reqBody []byte) []byte {
 		return true
 	})
 	log.Printf("系统名称 : %v\n", system.String())
-	retdata, _ := utils.Convert2JSON(genResMsg("0000", ""))
+	retdata, _ = utils.Convert2JSON(genResMsg("0000", ""))
 	return retdata
 }
 
