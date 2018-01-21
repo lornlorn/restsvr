@@ -1,6 +1,7 @@
 package httpsvr
 
 import (
+	"app/sshclient"
 	"app/utils"
 	"encoding/json"
 	"fmt"
@@ -48,9 +49,9 @@ func test(reqBody []byte) []byte {
 	}
 
 	go func(host string) {
-		ssh := sshclient.NewSSH("198.211.33.76", "root",
-			conf.Password, 22)
+		ssh := sshclient.NewSSH("198.211.33.76", "root", "", 22)
 		ssh.PrintRun("df -h")
+	}("198.211.33.76")
 
 	return ret
 }

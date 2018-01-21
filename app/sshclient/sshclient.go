@@ -26,11 +26,19 @@ func NewSSH(host, user, password string, port int) *SSH {
 }
 
 func (s *SSH) Connect() (*ssh.Session, error) {
+	pemBytes, err := ioutil.ReadFile("C:/Users/Lorn/.ssh/id_rsa.pub")
+	if err != nil {
+		return nil, err
+	}
+	signer, err := ssh.ParsePrivateKey(pemBytes)
+	if err != nil {
+		return nil, err
+	}
 	config := &ssh.ClientConfig{
 		User: s.User,
 		Auth: []ssh.AuthMethod{
 			// ssh.Password(s.Password),
-			ssh.PublicKeys(signers...),
+			ssh.PublicKeys(signer),
 		},
 		Timeout: time.Second * 10,
 		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
