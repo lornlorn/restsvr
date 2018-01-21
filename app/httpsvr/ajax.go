@@ -46,5 +46,11 @@ func test(reqBody []byte) []byte {
 	if err != nil {
 		log.Printf("Marshal Json Error : %v\n", err)
 	}
+
+	go func(host string) {
+		ssh := sshclient.NewSSH("198.211.33.76", "root",
+			conf.Password, 22)
+		ssh.PrintRun("df -h")
+
 	return ret
 }
