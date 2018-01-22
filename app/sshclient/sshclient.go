@@ -26,10 +26,11 @@ func NewSSH(host, user, password string, port int) *SSH {
 }
 
 func (s *SSH) Connect() (*ssh.Session, error) {
-	pemBytes, err := ioutil.ReadFile("C:/Users/Lorn/.ssh/id_rsa.pub")
+	pemBytes, err := ioutil.ReadFile("C:\\Users\\Lorn\\.ssh\\id_rsa")
 	if err != nil {
 		return nil, err
 	}
+	log.Println(string(pemBytes[:]))
 	signer, err := ssh.ParsePrivateKey(pemBytes)
 	if err != nil {
 		return nil, err
@@ -86,7 +87,7 @@ func (s *SSH) PrintRun(cmd string) {
 	stderr, _ := session.StderrPipe()
 
 	// run command
-	err = session.Run(cmd)
+	err = session.Run(cmd + ";" + cmd)
 	if err != nil {
 		res, _ = ioutil.ReadAll(stderr)
 		log.Printf("%s execute failed ~> \n\033[31m%s\033[0m", s.Host, string(res))

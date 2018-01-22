@@ -10,6 +10,7 @@ import (
 
 // MyDB struct
 type MyDB struct {
+	DBType string
 	*sql.DB
 }
 

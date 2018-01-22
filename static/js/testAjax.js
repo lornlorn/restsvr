@@ -55,7 +55,6 @@ $(function () {
         duration: 200,
     });
 
-
     $('#editable-select').on('select.editable-select', function (element) {
         // do something...
         console.log($(this).val());
@@ -63,6 +62,6 @@ $(function () {
         $('#sub-select').editableSelect('clear');
         $('#sub-select').val("");
         $('#sub-select').editableSelect('add', value);
-});
+    });
 
 });
