@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/go-xorm/xorm"
 	_ "github.com/lib/pq"
 )
 
@@ -15,12 +16,14 @@ type MyDB struct {
 }
 
 const (
-	host     = "localhost"
+	host     = "192.168.100.100"
 	port     = 5432
-	user     = "postgres"
-	password = "postgres"
-	dbname   = "postgres"
+	user     = "test"
+	password = "test"
+	dbname   = "testdb"
 )
+
+var Engine *xorm.Engine
 
 // Connect func()
 func Connect() (*MyDB, error) {
@@ -59,5 +62,23 @@ func (db *MyDB) Insert(tab string, stat map[string]interface{}) error {
 		log.Printf("SQL Execute Failed : %v", err)
 	}
 	log.Println(res)
+	return nil
+}
+
+// InitDB func() error
+func InitDB() error {
+	var err error
+	dbtype := "postgres"
+	dbstr := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=disable", host, port, user, password, dbname)
+	Engine, err = xorm.NewEngine(dbtype, dbstr)
+	if err != nil {
+		return err
+	}
+	Engine.ShowSQL(true)
+	err = Engine.Ping()
+	if err != nil {
+		log.Printf("DB Ping Failed : %v\n", err)
+		return err
+	}
 	return nil
 }

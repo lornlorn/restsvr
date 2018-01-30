@@ -1,7 +1,8 @@
 package httpsvr
 
 import (
-	"app/sshclient"
+	"app/db"
+	"app/models"
 	"app/utils"
 	"encoding/json"
 	"fmt"
@@ -48,10 +49,21 @@ func test(reqBody []byte) []byte {
 		log.Printf("Marshal Json Error : %v\n", err)
 	}
 
-	go func(host string) {
-		ssh := sshclient.NewSSH("198.211.33.76", "root", "", 22)
-		ssh.PrintRun("df -h")
-	}("198.211.33.76")
+	// go func(host string) {
+	// 	ssh := sshclient.NewSSH(host, "root", "", 22)
+	// 	ssh.PrintRun("df -h")
+	// }("198.211.33.76")
+
+	dept := new(models.Dept)
+	dept.DeptName = "TestDept"
+	dept.DeptStatus = "VALID"
+
+	affected, err := db.Engine.Insert(dept)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(affected)
+	log.Println(dept.DeptId)
 
 	return ret
 }
