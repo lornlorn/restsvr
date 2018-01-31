@@ -12,4 +12,5 @@ func main() {
 		log.Fatalln(err)
 	}
 	log.Fatalln(httpsvr.StartHTTP())
+	_ = db.Engine.Close()
 }

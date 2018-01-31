@@ -1,7 +1,6 @@
 package httpsvr
 
 import (
-	"app/db"
 	"app/models"
 	"app/utils"
 	"encoding/json"
@@ -58,11 +57,10 @@ func test(reqBody []byte) []byte {
 	dept.DeptName = "TestDept"
 	dept.DeptStatus = "VALID"
 
-	affected, err := db.Engine.Insert(dept)
+	err = dept.Save()
 	if err != nil {
-		log.Println(err)
+		log.Printf("DB Save Failed : %v\n", err)
 	}
-	log.Println(affected)
 	log.Println(dept.DeptId)
 
 	return ret
