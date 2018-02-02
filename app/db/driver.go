@@ -38,7 +38,7 @@ func InitDB() error {
 	Engine.ShowSQL(true)
 	err = Engine.Ping()
 	if err != nil {
-		log.Printf("DB Ping Failed : %v\n", err)
+		log.Println("DB Ping Failed")
 		return err
 	}
 	return nil

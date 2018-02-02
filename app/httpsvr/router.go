@@ -116,13 +116,13 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		ajaxResponse(res, retdata)
 		return
 	}
-	// 处理反射方法返回值 规定必须返回JSON格式数据([]byte)
-	// 例如
-	// 返回JSON数据 ([]byte(map[]...))
-	// 返回应答信息 ([]byte({retcode, retmsg}))
+	// 处理反射方法返回值
+	// 规定必须两个返回值
+	// 1、string类型("data","msg")表示返回数据为数据或是消息
+	// 2、JSON格式数据([]byte())
 	switch len(ret) {
-	case 1:
-		ajaxResponse(res, ret[0].Bytes())
+	case 2:
+		ajaxResponse(res, ret[1].Bytes())
 	default:
 		retdata := genResMsg("0005", "反射方法返回值数量不正确")
 		ajaxResponse(res, retdata)

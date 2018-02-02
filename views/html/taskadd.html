@@ -9,15 +9,21 @@
 </head>
 
 <body>
-    <input id="module" type="hidden" value="taskmgr">
+    <input id="module" type="hidden" value="taskadd">
     <div id="jobinfo">
         <p>----------任务信息----------</p>
         <label>系统:</label>
         <input id="system" name="system" value="TEST">
         <label>名称:</label>
         <input id="name" name="name" value="测试任务">
+        <label>类型:</label>
+        <select>
+            <option value="工具">工具</option>
+            <option value="定时任务">定时任务</option>
+            <option value="计划任务">计划任务</option>
+        </select>
         <label>保存为工具:</label>
-        <input id="iftool" type="checkbox">
+        <input id="iftool" type="checkbox"> 
         <label>执行时间表达式:</label>
         <input id="runtime" name="runtime" value="30 * * * *">
         <button id="submit">提交</button>
@@ -54,7 +60,7 @@
     </div>
 
     <script src="/static/js/jquery-3.2.1.min.js"></script>
-    <script src="/static/js/taskmgr.js"></script>
+    <script src="/static/js/taskadd.js"></script>
 </body>
 
 </html>

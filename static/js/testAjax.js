@@ -44,7 +44,7 @@ $(function () {
     });
 
     $('#editable-select').editableSelect({
-        filter: false,
+        filter: true,
         effects: 'fade',
         duration: 200,
     });
