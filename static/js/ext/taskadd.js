@@ -90,6 +90,33 @@ $(function () {
         };
     });
 
+    // 根据不同任务类型改变执行时间输入框
+    $('#tasktype').change(function () {
+        $("#runtime").val("");
+        var tasktype = $(this).val();
+        switch (tasktype) {
+            case "工具":
+                console.log("gongju");
+                $("#runtime").attr("disabled", true);
+                break;
+            case "定时任务":
+                console.log("dsrw");
+                $("#runtime").attr("disabled", false);
+                break;
+            case "计划任务":
+                console.log("jhrw");
+                $("#runtime").attr("disabled", false);
+                $('#runtime').datetimepicker({
+                    controlType: 'select',
+                    oneLine: true,
+                });
+                break;
+            default:
+                console.log("default");
+                alert("页面错误,请联系管理员解决...");
+        };
+    });
+
     // 提交
     $submit.click(function () {
         var params = {};

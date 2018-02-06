@@ -15,7 +15,7 @@ type MyDB struct {
 }
 
 const (
-	host     = "192.168.100.100"
+	host     = "localhost"
 	port     = 5432
 	user     = "test"
 	password = "test"
@@ -30,7 +30,7 @@ func InitDB() error {
 	var err error
 	dbtype := "postgres"
 	// dbstr := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=disable", host, port, user, password, dbname)
-	dbstr := "postgres://test:test@192.168.100.100:5432/testdb?sslmode=disable"
+	dbstr := "postgres://test:test@localhost:5432/testdb?sslmode=disable"
 	Engine, err = xorm.NewEngine(dbtype, dbstr)
 	if err != nil {
 		return err

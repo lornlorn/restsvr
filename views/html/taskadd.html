@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>任务编辑</title>
+    <link href="/static/css/base/jquery-editable-select.min.css" rel="stylesheet">
+    <link href="/static/css/base/jquery-ui.min.css" rel="stylesheet">
+    <link href="/static/css/base/jquery-ui-timepicker-addon.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -17,7 +20,8 @@
         <label>名称:</label>
         <input id="name" name="name" value="测试任务">
         <label>类型:</label>
-        <select>
+        <select id="tasktype">
+            <option disabled selected value="default">请选择...</option>
             <option value="工具">工具</option>
             <option value="定时任务">定时任务</option>
             <option value="计划任务">计划任务</option>
@@ -59,8 +63,12 @@
         </div>
     </div>
 
-    <script src="/static/js/jquery-3.2.1.min.js"></script>
-    <script src="/static/js/taskadd.js"></script>
+    <script src="/static/js/base/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/base/jquery-editable-select.min.js"></script>
+    <script src="/static/js/base/jquery-ui.min.js"></script>
+    <script src="/static/js/base/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="/static/js/base/jquery-ui-timepicker-zh-CN.js"></script>
+    <script src="/static/js/ext/taskadd.js"></script>
 </body>
 
 </html>
