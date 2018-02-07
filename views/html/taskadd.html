@@ -26,10 +26,13 @@
             <option value="定时任务">定时任务</option>
             <option value="计划任务">计划任务</option>
         </select>
+        <!--
         <label>保存为工具:</label>
-        <input id="iftool" type="checkbox"> 
-        <label>执行时间表达式:</label>
-        <input id="runtime" name="runtime" value="30 * * * *">
+        <input id="iftool" type="checkbox">
+        -->
+        <label id="label_runtime"></label>
+        <input id="cron" name="cron" value="" type="hidden" placeholder="执行时间表达式" title="执行时间表达式 * * * * *">
+        <input id="runtime" name="runtime" value="" type="hidden" placeholder="请选择日期时间" title="点击选择">
         <button id="submit">提交</button>
     </div>
     <div id="stepinfo">

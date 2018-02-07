@@ -10,7 +10,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func addtask(reqBody []byte) (string, []byte) {
+func taskadd(reqBody []byte) (string, []byte) {
 	var retdata []byte
 	system := gjson.Get(string(reqBody), "data.jobinfo.system")
 	steplist := gjson.Get(string(reqBody), "data.steplist")

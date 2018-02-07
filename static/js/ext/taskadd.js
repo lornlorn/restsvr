@@ -82,13 +82,14 @@ $(function () {
     });
 
     // "立即执行"选中后置"执行时间表达式"为不可用
-    $("#iftool").click(function () {
-        if ($("#iftool").is(":checked")) {
-            $("#runtime").attr("disabled", true);
-        } else {
-            $("#runtime").attr("disabled", false);
-        };
-    });
+    // $("#iftool").click(function () {
+    //     if ($("#iftool").is(":checked")) {
+    //         $("#runtime").attr("disabled", true);
+    //     } else {
+    //         $("#runtime").attr("disabled", false);
+    //     };
+    // });
+
 
     // 根据不同任务类型改变执行时间输入框
     $('#tasktype').change(function () {
@@ -97,15 +98,27 @@ $(function () {
         switch (tasktype) {
             case "工具":
                 console.log("gongju");
+                $("#cron").attr("disabled", true);
                 $("#runtime").attr("disabled", true);
+                $("#cron").attr("type", "hidden");
+                $("#runtime").attr("type", "hidden");
+                $("#label_runtime").text("");
                 break;
             case "定时任务":
                 console.log("dsrw");
-                $("#runtime").attr("disabled", false);
+                $("#cron").attr("disabled", false);
+                $("#runtime").attr("disabled", true);
+                $("#cron").attr("type", "text");
+                $("#runtime").attr("type", "hidden");
+                $("#label_runtime").text("执行时间:");
                 break;
             case "计划任务":
                 console.log("jhrw");
+                $("#cron").attr("disabled", true);
                 $("#runtime").attr("disabled", false);
+                $("#cron").attr("type", "hidden");
+                $("#runtime").attr("type", "text");
+                $("#label_runtime").text("执行时间:");
                 $('#runtime').datetimepicker({
                     controlType: 'select',
                     oneLine: true,
@@ -163,7 +176,7 @@ $(function () {
         console.log('REQUEST : ' + JSON.stringify(params));
 
         $.ajax({
-            url: '/ajax/addtask',
+            url: '/ajax/taskadd',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(params),
@@ -185,4 +198,8 @@ $(function () {
         });
     });
 
+});
+
+$(function () {
+    $(document).tooltip();
 });
