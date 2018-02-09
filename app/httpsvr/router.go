@@ -80,7 +80,7 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 		"test":    test,
 	}
 
-	subroute()
+	// subroute()
 
 	// 定义返回值
 	// var retcode, retmsg string
