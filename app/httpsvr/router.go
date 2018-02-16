@@ -63,7 +63,20 @@ func htmlHandler(res http.ResponseWriter, req *http.Request) {
 
 		return
 	}
-	tmpl.Execute(res, nil)
+
+	tmplData := reqTmplData(subroute)
+
+	tmpl.Execute(res, tmplData)
+}
+
+func reqTmplData(module string) map[string]string {
+	ret := map[string]string{
+		"111": "PCMS-第三方CA系统",
+		"222": "GLMS-全球额度管理系统",
+		"333": "GLS-总账系统",
+		"444": "ORSS-海外报表平台",
+	}
+	return ret
 }
 
 func ajaxHandler(res http.ResponseWriter, req *http.Request) {

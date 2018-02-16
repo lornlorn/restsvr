@@ -18,10 +18,14 @@
         <label>系统:</label>
         <!-- <input id="system" name="system" value="TEST"> -->
         <select id="system">
-            <option value="111">PCMS-第三方CA系统</option>
+            <!-- <option value="111">PCMS-第三方CA系统</option>
             <option value="222">GLMS-全球额度管理系统</option>
             <option value="333">GLS-总账系统</option>
-            <option value="444">ORSS-海外报表平台</option>
+            <option value="444">ORSS-海外报表平台</option> -->
+            <!-- 模板填充 数据为map[string]string{"111":"ORSS-海外报表平台"} -->
+            {{range $id, $val := .}}
+            <option value="{{$id}}">{{$val}}</option>
+            {{end}}
         </select>
         <label>名称:</label>
         <input id="name" name="name" value="测试任务">

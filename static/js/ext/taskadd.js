@@ -201,6 +201,17 @@ $(function () {
         duration: 200,
     });
 
+    $('#system').on('select.editable-select', function (element) {
+        // do something...
+        console.log($(this).val());
+        console.log($(this).text());
+        console.log($(this).attr("value"));
+        // var value = $(this).val();
+        // $('#sub-select').editableSelect('clear');
+        // $('#sub-select').val("");
+        // $('#sub-select').editableSelect('add', value);
+    });
+
 });
 
 $(function () {
