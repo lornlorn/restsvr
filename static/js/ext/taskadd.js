@@ -193,6 +193,14 @@ $(function () {
             },
         });
     });
+
+
+    $('#system').editableSelect({
+        filter: true,
+        effects: 'fade',
+        duration: 200,
+    });
+
 });
 
 $(function () {
