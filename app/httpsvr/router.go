@@ -89,8 +89,9 @@ func ajaxHandler(res http.ResponseWriter, req *http.Request) {
 
 	// 定义子路由反射调用函数
 	ajaxFuncList := map[string]interface{}{
-		"taskadd": taskadd,
-		"test":    test,
+		"taskadd":      taskadd,
+		"test":         test,
+		"autocomplete": autocomplete,
 	}
 
 	// subroute()

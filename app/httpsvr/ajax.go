@@ -65,3 +65,21 @@ func test(reqBody []byte) (string, []byte) {
 
 	return "msg", ret
 }
+
+func autocomplete(reqBody []byte) (string, []byte) {
+	resdata := []map[string]string{
+		{"id": "111",
+			"enname": "PCMS",
+			"cnname": "第三方CA系统",
+		},
+		{"id": "222",
+			"enname": "ORSS",
+			"cnname": "海外报表平台",
+		},
+	}
+	ret, err := json.Marshal(resdata)
+	if err != nil {
+		log.Printf("Marshal Json Error : %v\n", err)
+	}
+	return "", ret
+}
