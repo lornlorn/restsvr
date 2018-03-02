@@ -200,11 +200,15 @@ func ajaxResponse(response http.ResponseWriter, retobj interface{}) {
 
 func testHandle(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route Test : %v\n", req.URL)
-	tmpl, err := template.ParseFiles("views/test/test.html")
+	vars := mux.Vars(req)
+	subroute := vars["page"]
+	tmpl, err := template.ParseFiles(fmt.Sprintf("views/test/%v.html", subroute))
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
+		return
 	}
 	tmpl.Execute(res, nil)
+
 }
 
 func redisHandler(res http.ResponseWriter, req *http.Request) {

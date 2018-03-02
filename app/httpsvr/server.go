@@ -38,7 +38,7 @@ func initRoutes(r *mux.Router) {
 
 	// test
 	r.HandleFunc("/redis", redisHandler)
-	r.HandleFunc("/test", testHandle)
+	r.HandleFunc("/test/{page}", testHandle)
 
 	// static resource
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
