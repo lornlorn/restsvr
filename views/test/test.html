@@ -8,6 +8,7 @@
     <title>Test Page</title>
     <link href="/static/css/base/jquery-editable-select.min.css" rel="stylesheet">
     <link href="/static/css/base/jquery-ui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/base/bulma.min.css">
     <!-- <link href="/static/css/base/uikit/uikit.min.css" rel="stylesheet"> -->
     <!-- <link href="/static/css/base/uikit/components/autocomplete.min.css" rel="stylesheet"> -->
 </head>
@@ -56,7 +57,12 @@
 
     <select id="sub-select"></select>
 
-    <input type="text" id="autocomplete">
+    <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input type="text" id="autocomplete" class="input is-info" placeholder="Text input">
+        </div>
+      </div>
 
     <script src="/static/js/base/jquery-3.2.1.min.js"></script>
     <script src="/static/js/base/jquery-editable-select.min.js"></script>
