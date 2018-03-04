@@ -1,4 +1,4 @@
-package redisctr
+package redis
 
 import (
 	"app/models"

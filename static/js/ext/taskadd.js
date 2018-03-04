@@ -248,3 +248,33 @@ function submitValidCheck() {
     return true;
 };
 
+$("#system").autocomplete({
+    source: function (request, response) {
+        var params = {};
+        params['module'] = $module.text();
+        params['data'] = {};
+        $.ajax({
+            url: '/ajax/autocomplete/system',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(params),
+            async: 'true',
+            dataType: 'json',
+            success: function (data) {
+                // console.log(data);
+                response($.map(data, function (item) {
+                    return {
+                        id: item.id,
+                        label: item.enname,
+                        value: item.enname + "-" + item.cnname,
+                    };
+                }));
+            },
+        });
+    },
+    minLength: 2,
+    select: function (event, ui) {
+        console.log(ui.item.id);
+        // console.log(event);
+    },
+});

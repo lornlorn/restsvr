@@ -72,7 +72,7 @@ $("#autocomplete").autocomplete({
         params['module'] = $module.text();
         params['data'] = {};
         $.ajax({
-            url: '/ajax/autocomplete',
+            url: '/ajax/autocomplete/systemlist',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(params),
@@ -93,6 +93,7 @@ $("#autocomplete").autocomplete({
     minLength: 2,
     select: function (event, ui) {
         console.log(ui.item.id);
+        $("#system").attr("data-id",ui.item.id);
         // console.log(event);
     },
 });

@@ -1,6 +1,8 @@
 package httpsvr
 
 import (
+	"app/httpsvr/handler"
+
 	"log"
 	"net/http"
 	"time"
@@ -30,23 +32,32 @@ func StartHTTP() error {
 
 func initRoutes(r *mux.Router) {
 	// normal router
-	r.HandleFunc("/index", indexHandle)
+	r.HandleFunc("/index", handler.IndexHandle)
 
 	// dynamic router
-	r.HandleFunc("/ajax/{func}", ajaxHandler)
-	r.HandleFunc("/html/{module}", htmlHandler)
+	// ajax router
+	ajax := r.PathPrefix("/ajax").Subrouter()
+	// ajax root router
+	// ajax.HandleFunc("/", notFoundHandler)
+	// ajax autocomplete subrouter
+	ajax.HandleFunc("/autocomplete/{func}", handler.AutocompleteHandler)
+	// ajax data subrouter
+	ajax.HandleFunc("/data/{func}", handler.DataHandler)
+
+	// html router
+	r.HandleFunc("/html/{module}", handler.HTMLHandler)
 
 	// test
-	r.HandleFunc("/redis", redisHandler)
-	r.HandleFunc("/test/{page}", testHandle)
+	r.HandleFunc("/redis", handler.RedisHandler)
+	r.HandleFunc("/test/{page}", handler.TestHandle)
 
 	// static resource
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	// subrouter
 	s := r.PathPrefix("/").Subrouter()
-	s.HandleFunc("/", notFoundHandler)
-	s.HandleFunc("/{key}", notFoundHandler)
+	s.HandleFunc("/", handler.NotFoundHandler)
+	s.HandleFunc("/{key}", handler.NotFoundHandler)
 
 	// http.HandleFunc("/", notFoundHandler)
 	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
