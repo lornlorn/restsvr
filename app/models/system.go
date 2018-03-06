@@ -19,8 +19,8 @@ type System struct {
 	SystemModifyTime time.Time `xorm:"not null DATETIME updated"`
 }
 
-// GetSystemList func() []System
-func GetSystemList() []System {
+// GetSystemList func() ([]System, error)
+func GetSystemList() ([]System, error) {
 	ret := []System{
 		{
 			SystemId:     111,
@@ -34,5 +34,5 @@ func GetSystemList() []System {
 		},
 	}
 
-	return ret
+	return ret, nil
 }
