@@ -7,7 +7,7 @@ import (
 
 // Dept struct map db table dept
 type Dept struct {
-	DeptId         int       `xorm:"not null pk autoincr unique INTEGER"`
+	DeptId         int       `xorm:"not null pk autoincr unique INTEGER"` // xorm
 	DeptName       string    `xorm:"not null VARCHAR(16)"`
 	DeptStatus     string    `xorm:"not null VARCHAR(16)"`
 	DeptCreate     int       `xorm:"not null default 0 INTEGER"`

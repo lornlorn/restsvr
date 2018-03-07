@@ -1,12 +1,15 @@
 package models
 
 import (
+	"app/db"
+	"fmt"
+	"log"
 	"time"
 )
 
 // System struct map db table system
 type System struct {
-	SystemId         int       `xorm:"not null pk autoincr unique INTEGER"`
+	SystemId         int       `xorm:"not null pk autoincr unique INTEGER"` // xorm
 	SystemCnname     string    `xorm:"not null VARCHAR(128)"`
 	SystemEnname     string    `xorm:"not null VARCHAR(16)"`
 	SystemType       string    `xorm:"not null VARCHAR(16)"`
@@ -20,7 +23,18 @@ type System struct {
 }
 
 // GetSystemList func() ([]System, error)
-func GetSystemList() ([]System, error) {
+func GetSystemList(enname string) ([]System, error) {
+
+	systems := make([]System, 0)
+	if err := db.Engine.Where("system_status = ? and system_enname like ?", "VALID", enname+"%").Find(&systems); err != nil {
+		// return nil, err
+		log.Println(err)
+	}
+
+	for i, v := range systems {
+		fmt.Printf("DataIndex : %v        DataContent : %v\n", i, v)
+	}
+
 	ret := []System{
 		{
 			SystemId:     111,
@@ -35,4 +49,15 @@ func GetSystemList() ([]System, error) {
 	}
 
 	return ret, nil
+
+}
+
+// Save insert method
+func (s *System) Save() error {
+	// affected, err := db.Engine.Insert(d)
+	_, err := db.Engine.Insert(s)
+	if err != nil {
+		return err
+	}
+	return nil
 }

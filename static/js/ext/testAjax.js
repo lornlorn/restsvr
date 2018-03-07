@@ -82,9 +82,9 @@ $("#autocomplete").autocomplete({
                 // console.log(data);
                 response($.map(data, function (item) {
                     return {
-                        id: item.id,
-                        label: item.enname,
-                        value: item.enname + "-" + item.cnname,
+                        id: item.sysid,
+                        label: item.sysenname,
+                        value: item.sysenname + "-" + item.syscnname,
                     };
                 }));
             },
@@ -93,7 +93,7 @@ $("#autocomplete").autocomplete({
     minLength: 2,
     select: function (event, ui) {
         console.log(ui.item.id);
-        $("#system").attr("data-id",ui.item.id);
-        // console.log(event);
+        $("#autocomplete").attr("data-id",ui.item.id);
+        console.log($("#autocomplete").attr("data-id"));
     },
 });
