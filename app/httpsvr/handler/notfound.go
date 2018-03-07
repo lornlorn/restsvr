@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// NotFoundHandler func(res http.ResponseWriter, req *http.Request)
 /*
 Route Not Found 404 Page
 And

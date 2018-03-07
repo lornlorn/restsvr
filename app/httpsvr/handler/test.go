@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// TestHandle func(res http.ResponseWriter, req *http.Request)
 func TestHandle(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route Test : %v\n", req.URL)
 	vars := mux.Vars(req)

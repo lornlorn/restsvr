@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// RedisHandler func(res http.ResponseWriter, req *http.Request)
 func RedisHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route Redis : %v\n", req.URL)
 	connStr := models.RedisConnector{
