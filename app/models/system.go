@@ -4,6 +4,7 @@ import (
 	"app/db"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -23,33 +24,20 @@ type System struct {
 }
 
 // GetSystemList func() ([]System, error)
-func GetSystemList(enname string) ([]System, error) {
+func GetSystemList(enkeyword string) ([]System, error) {
 
 	systems := make([]System, 0)
-	if err := db.Engine.Where("system_status = ? and system_enname like ?", "VALID", enname+"%").Find(&systems); err != nil {
+	if err := db.Engine.Where("system_status = ? and upper(system_enname) like ?", "VALID", strings.ToUpper(enkeyword)+"%").Find(&systems); err != nil {
 		// return nil, err
 		log.Println(err)
+		return nil, err
 	}
 
 	for i, v := range systems {
-		fmt.Printf("DataIndex : %v        DataContent : %v\n", i, v)
+		fmt.Printf("DataIndex : %v, DataContent : %v\n", i, v)
 	}
 
-	ret := []System{
-		{
-			SystemId:     111,
-			SystemEnname: "ORSS",
-			SystemCnname: "海外报表平台",
-		},
-		{
-			SystemId:     222,
-			SystemEnname: "PCMS",
-			SystemCnname: "第三方CA系统",
-		},
-	}
-
-	return ret, nil
-
+	return systems, nil
 }
 
 // Save insert method

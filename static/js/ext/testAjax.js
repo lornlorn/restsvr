@@ -1,6 +1,4 @@
 var $module = $('#module');
-var $username = $('#username');
-var $password = $('#password');
 var $submit = $('#submit');
 
 $(function () {
@@ -9,7 +7,7 @@ $(function () {
         $('#result').text('');
 
         var params = {};
-        params['module'] = $module.text();
+        params['module'] = $module.val();
         // params['data'] = [];
         params['data'] = {};
         $('#json').find('input[name]').each(function () {
@@ -69,8 +67,9 @@ $(function () {
 $("#autocomplete").autocomplete({
     source: function (request, response) {
         var params = {};
-        params['module'] = $module.text();
+        params['module'] = $module.val();
         params['data'] = {};
+        params['data']["keyword"] = $("#autocomplete").val();
         $.ajax({
             url: '/ajax/autocomplete/systemlist',
             type: 'POST',
@@ -92,8 +91,8 @@ $("#autocomplete").autocomplete({
     },
     minLength: 2,
     select: function (event, ui) {
-        console.log(ui.item.id);
+        // console.log(ui.item.id);
         $("#autocomplete").attr("data-id",ui.item.id);
-        console.log($("#autocomplete").attr("data-id"));
+        // console.log($("#autocomplete").attr("data-id"));
     },
 });
