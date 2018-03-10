@@ -17,12 +17,6 @@
         <p>----------任务信息----------</p>
         <label>系统:</label>
         <input id="system" type="text" name="system" placeholder="请输入系统缩写...">
-        <!-- <select id="system">
-            <!-- 模板填充 数据为map[string]string{"111":"ORSS-海外报表平台"} -->
-            {{range $id, $val := .}}
-            <option value="{{$id}}">{{$val}}</option>
-            {{end}}
-        </select> -->
         <label>名称:</label>
         <input id="name" name="name" value="测试任务">
         <label>类型:</label>
@@ -40,6 +34,14 @@
         <input id="cron" name="cron" value="" type="hidden" placeholder="执行时间表达式" title="执行时间表达式 * * * * *">
         <input id="runtime" name="runtime" value="" type="hidden" placeholder="请选择日期时间">
         <button id="submit">提交</button>
+        <p>
+            <p>
+                <label>说明:</label>
+            </p>
+            <p>
+                <textarea id="desc" cols="100" rows="5"></textarea>
+            </p>
+        </p>
     </div>
     <div id="stepinfo">
         <p>----------作业列表----------</p>

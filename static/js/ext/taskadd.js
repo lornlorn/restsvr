@@ -90,7 +90,7 @@ $(function () {
     // }); 
 
     // 根据不同任务类型改变执行时间输入框 
-    $('#type').change(function () {
+    $('#tasktype').change(function () {
         $("#runtime").val("");
         var type = $(this).val();
         switch (type) {
@@ -140,7 +140,7 @@ $(function () {
         params['data']['task'] = {};
         params['data']['task']['system'] = $("#system").val();
         params['data']['task']['name'] = $("#name").val();
-        params['data']['task']['type'] = $("#type").val();
+        params['data']['task']['type'] = $("#tasktype").val();
         // params['data']['task']['iftool'] = iftool; 
         params['data']['task']['cron'] = $("#cron").val();
         params['data']['task']['runtime'] = $("#runtime").val();
@@ -186,30 +186,12 @@ $(function () {
             },
             error: function (result) {
                 // $('#status').text('请求失败'); 
-                console.log("求失败");
+                console.log("请求失败");
             },
             complete: function () {
                 console.log("Ajax finish");
             },
         });
-    });
-
-
-    $('#system').editableSelect({
-        filter: true,
-        effects: 'fade',
-        duration: 200,
-    });
-
-    $('#system').on('select.editable-select', function (element) {
-        // do something...
-        console.log($(this).val());
-        console.log($(this).text());
-        console.log($(this).attr("value"));
-        // var value = $(this).val();
-        // $('#sub-select').editableSelect('clear');
-        // $('#sub-select').val("");
-        // $('#sub-select').editableSelect('add', value);
     });
 
 });
@@ -219,7 +201,7 @@ $(function () {
 });
 
 function submitValidCheck() {
-    var type = $("#type").val();
+    var type = $("#tasktype").val();
     var cron = $("#cron").val();
     var runtime = $("#runtime").val();
     // console.log(type); 
@@ -251,10 +233,11 @@ function submitValidCheck() {
 $("#system").autocomplete({
     source: function (request, response) {
         var params = {};
-        params['module'] = $module.text();
+        params['module'] = $module.val();
         params['data'] = {};
+        params['data']["keyword"] = $("#system").val();
         $.ajax({
-            url: '/ajax/autocomplete/system',
+            url: '/ajax/autocomplete/systemlist',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(params),
@@ -264,9 +247,9 @@ $("#system").autocomplete({
                 // console.log(data);
                 response($.map(data, function (item) {
                     return {
-                        id: item.id,
-                        label: item.enname,
-                        value: item.enname + "-" + item.cnname,
+                        id: item.sysid,
+                        label: item.sysenname,
+                        value: item.sysenname + "-" + item.syscnname,
                     };
                 }));
             },
@@ -274,7 +257,8 @@ $("#system").autocomplete({
     },
     minLength: 2,
     select: function (event, ui) {
-        console.log(ui.item.id);
-        // console.log(event);
+        // console.log(ui.item.id);
+        $("#autocomplete").attr("data-id", ui.item.id);
+        // console.log($("#autocomplete").attr("data-id"));
     },
 });
