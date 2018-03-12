@@ -2,7 +2,6 @@ package models
 
 import (
 	"app/db"
-	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -34,7 +33,7 @@ func GetSystemList(enkeyword string) ([]System, error) {
 	}
 
 	for i, v := range systems {
-		fmt.Printf("DataIndex : %v, DataContent : %v\n", i, v)
+		log.Printf("DataIndex : %v, DataContent : %v\n", i, v)
 	}
 
 	return systems, nil

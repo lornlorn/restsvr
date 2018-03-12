@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>任务编辑</title>
+    <link href="/static/css/base/jquery-editable-select.min.css" rel="stylesheet">
+    <link href="/static/css/base/jquery-ui.min.css" rel="stylesheet">
+    <link href="/static/css/base/jquery-ui-timepicker-addon.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <input id="module" type="hidden" value="taskadd">
+    <div id="jobinfo">
+        <p>----------任务信息----------</p>
+        <label>系统:</label>
+        <input id="system" type="text" name="system" placeholder="请输入系统缩写...">
+        <label>名称:</label>
+        <input id="name" name="name" value="测试任务">
+        <label>类型:</label>
+        <select id="tasktype">
+            <option disabled selected value="default">请选择...</option>
+            <option value="工具">工具</option>
+            <option value="定时任务">定时任务</option>
+            <option value="计划任务">计划任务</option>
+        </select>
+        <!--
+        <label>保存为工具:</label>
+        <input id="iftool" type="checkbox">
+        -->
+        <label id="label_runtime"></label>
+        <input id="cron" name="cron" value="" type="hidden" placeholder="执行时间表达式" title="执行时间表达式 * * * * *">
+        <input id="runtime" name="runtime" value="" type="hidden" placeholder="请选择日期时间">
+        <button id="submit">提交</button>
+        <p>
+            <p>
+                <label>说明:</label>
+            </p>
+            <p>
+                <textarea id="desc" cols="100" rows="5"></textarea>
+            </p>
+        </p>
+    </div>
+    <div id="stepinfo">
+        <p>----------作业列表----------</p>
+        <div id="joboperation">
+            <button class="step-add">添加步骤</button>
+            <button class="step-del">删除步骤</button>
+        </div>
+        <div id="steplist">
+            <div class="step" data-seq="1" data-valid="true">
+                <p data-name="step-title">----------STEP 1----------</p>
+                <p data-name="step-operation">
+                    <input data-type="check" data-name="step-check" type="checkbox">
+                    <button class="stepdtl-add">添加指令</button>
+                    <button class="stepdtl-del">删除指令</button>
+                </p>
+                <div class="stepdtl">
+                    <input data-type="check" data-name="stepdtl-check" type="checkbox">
+                    <label>IP:</label>
+                    <input data-type="data" data-name="ip" value="192.168.100.101">
+                    <label>端口:</label>
+                    <input data-type="data" data-name="port" value="22" style="width:50px;">
+                    <label>用户名:</label>
+                    <input data-type="data" data-name="username" value="test">
+                    <label>密码:</label>
+                    <input data-type="data" data-name="password" value="test">
+                    <label>命令:</label>
+                    <input data-type="data" data-name="command" value="ls -lrt">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/base/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/base/jquery-editable-select.min.js"></script>
+    <script src="/static/js/base/jquery-ui.min.js"></script>
+    <script src="/static/js/base/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="/static/js/base/jquery-ui-timepicker-zh-CN.js"></script>
+    <script src="/static/js/ext/taskadd.js"></script>
+</body>
+
+</html>
