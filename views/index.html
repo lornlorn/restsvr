@@ -135,16 +135,17 @@
             </div>
         </div>
     </nav>
+
     <div class="container">
         <div class="columns">
             <div class="column is-one-fifth">
                 <nav class="panel">
                     <p class="panel-heading">
-                        repositories
+                        通讯录
                     </p>
                     <div class="panel-block">
                         <p class="control has-icons-left">
-                            <input class="input is-small" type="text" placeholder="search">
+                            <input class="input is-small" type="text" placeholder="search" onkeydown="if(event.keyCode==13){alert('aaa');}">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-search"></i>
                             </span>
@@ -152,10 +153,7 @@
                     </div>
                     <p class="panel-tabs">
                         <a class="is-active">all</a>
-                        <a>public</a>
-                        <a>private</a>
-                        <a>sources</a>
-                        <a>forks</a>
+                        <a>预留</a>
                     </p>
                     <a class="panel-block is-active">
                         <span class="panel-icon">
@@ -164,10 +162,20 @@
                         bulma
                     </a>
                     <a class="panel-block">
-                        <span class="panel-icon">
-                            <i class="fas fa-book"></i>
-                        </span>
-                        marksheet
+                        <div class="card">
+                            <header class="card-header">
+                                <span class="icon">
+                                    <i class="fas fa-book"></i>
+                                </span>
+                                <span>
+                                    刁磊
+                                </span>
+                            </header>
+                            <div class="card-content">
+                                    <a>软件工程师</a>
+                                    <a>010-82973717</a>
+                            </div>
+                        </div>
                     </a>
                     <a class="panel-block">
                         <span class="panel-icon">
