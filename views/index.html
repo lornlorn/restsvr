@@ -12,103 +12,109 @@
 
 <body>
 
-        <nav class="navbar is-boxed is-fullwidth">
-                <div class="container">
-                        <div class="navbar-brand">
-                                <a class="navbar-item" href="/index">
-                                    <img src="/static/img/BOCico.jpg" alt="BOC" width="45" height="50">
-                                </a>
-                                <a class="navbar-item" href="/index">
-                                    自动化操作系统
-                                </a>
-                                <div class="navbar-burger burger" data-target="navmenu">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </div>
-                    <div id="navmenu" class="navbar-menu">
-                        <div class="navbar-start">
-    
-                            <a class="navbar-item" href="/html/dashboard">
-                                仪表盘
+    <nav class="navbar is-boxed is-fullwidth">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/index">
+                    <img src="/static/img/BOC.jpg" alt="BOC">
+                    <!--width="45" height="50">-->
+                </a>
+                <div class="navbar-burger burger" data-target="navmenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navmenu" class="navbar-menu">
+                <div class="navbar-start">
+
+                    <a class="navbar-item" href="/html/dashboard">
+                        仪表盘
+                    </a>
+
+                    <!-- 配置管理 -->
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="/html/configmgr">
+                            配置管理
+                        </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <!-- <div class="navbar-dropdown"> -->
+                            <a class="navbar-item" href="/html/appmgr">
+                                应用管理
                             </a>
-    
-                            <!-- 配置管理 -->
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link" href="/html/configmgr">
-                                    配置管理
-                                </a>
-                                <div class="navbar-dropdown is-boxed">
-                                    <!-- <div class="navbar-dropdown"> -->
-                                    <a class="navbar-item" href="/html/appmgr">
-                                        应用管理
-                                    </a>
-                                    <a class="navbar-item" href="/html/servermgr">
-                                        服务器管理
-                                    </a>
-                                    <a class="navbar-item" href="/html/osusermgr">
-                                        用户管理
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/html/test">
-                                        T
-                                    </a>
-                                </div>
-                            </div>
-    
-                            <!-- 任务管理 -->
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link" href="/html/taskmgr">
-                                    任务管理
-                                </a>
-                                <div class="navbar-dropdown is-boxed">
-                                    <!-- <div class="navbar-dropdown"> -->
-                                    <a class="navbar-item" href="/html/cronmgr">
-                                        定时任务
-                                    </a>
-                                    <a class="navbar-item" href="/html/schedulemgr">
-                                        计划任务
-                                    </a>
-                                    <a class="navbar-item" href="/html/toolmgr">
-                                        工具
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/test">
-                                        T
-                                    </a>
-                                </div>
-                            </div>
-    
-                            <!-- 系统管理 -->
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link" href="/html/sysmgr">
-                                    系统管理
-                                </a>
-                                <div class="navbar-dropdown is-boxed">
-                                    <!-- <div class="navbar-dropdown"> -->
-                                    <a class="navbar-item" href="/html/deptmgr">
-                                        部门维护
-                                    </a>
-                                    <a class="navbar-item" href="/html/accountmgr">
-                                        账号维护
-                                    </a>
-                                    <a class="navbar-item" href="/html/argmgr">
-                                        参数维护
-                                    </a>
-                                    <a class="navbar-item" href="/html/authmgr">
-                                        权限维护
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" href="/test">
-                                        T
-                                    </a>
-                                </div>
-                            </div>
+                            <a class="navbar-item" href="/html/servermgr">
+                                服务器管理
+                            </a>
+                            <a class="navbar-item" href="/html/osusermgr">
+                                用户管理
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/html/test">
+                                T
+                            </a>
                         </div>
                     </div>
+
+                    <!-- 任务管理 -->
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="/html/taskmgr">
+                            任务管理
+                        </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <!-- <div class="navbar-dropdown"> -->
+                            <a class="navbar-item" href="/html/cronmgr">
+                                定时任务
+                            </a>
+                            <a class="navbar-item" href="/html/schedulemgr">
+                                计划任务
+                            </a>
+                            <a class="navbar-item" href="/html/toolmgr">
+                                工具
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/test">
+                                T
+                            </a>
+                        </div>
+                    </div>
+
+
                 </div>
-            </nav>
+
+                <div class="navbar-end">
+                    <!-- 系统管理 -->
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="/html/sysmgr">
+                            系统管理
+                        </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <!-- <div class="navbar-dropdown"> -->
+                            <a class="navbar-item" href="/html/deptmgr">
+                                部门维护
+                            </a>
+                            <a class="navbar-item" href="/html/accountmgr">
+                                账号维护
+                            </a>
+                            <a class="navbar-item" href="/html/argmgr">
+                                参数维护
+                            </a>
+                            <a class="navbar-item" href="/html/authmgr">
+                                权限维护
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/test">
+                                T
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="navbar-item">
+                        <button class="button is-link is-outlined">退出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <section class="hero is-link is-small">
         <div class="hero-head">
@@ -192,9 +198,35 @@
                     </span>
                     mojs
                 </a>
-                <label class="panel-block">
-                    <input type="checkbox"> remember me
-                </label>
+                <div class="panel-block">
+                    <nav class="pagination is-small" role="navigation" aria-label="pagination">
+                        <a class="pagination-previous">Previous</a>
+                        <a class="pagination-next">Next</a>
+                        <ul class="pagination-list">
+                            <li>
+                                <a class="pagination-link" aria-label="Goto page 1">1</a>
+                            </li>
+                            <li>
+                                <span class="pagination-ellipsis">&hellip;</span>
+                            </li>
+                            <li>
+                                <a class="pagination-link" aria-label="Goto page 45">45</a>
+                            </li>
+                            <li>
+                                <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
+                            </li>
+                            <li>
+                                <a class="pagination-link" aria-label="Goto page 47">47</a>
+                            </li>
+                            <li>
+                                <span class="pagination-ellipsis">&hellip;</span>
+                            </li>
+                            <li>
+                                <a class="pagination-link" aria-label="Goto page 86">86</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
                 <div class="panel-block">
                     <button class="button is-link is-outlined is-fullwidth">
                         reset all filters
