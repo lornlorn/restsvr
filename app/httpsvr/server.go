@@ -43,6 +43,8 @@ func initRoutes(r *mux.Router) {
 	ajax.HandleFunc("/autocomplete/{func}", handler.AutocompleteHandler)
 	// ajax data subrouter
 	ajax.HandleFunc("/data/{func}", handler.DataHandler)
+	// ajax table subrouter
+	ajax.HandleFunc("/table/{func}", handler.TableHandler)
 
 	// html router
 	h := r.PathPrefix("/html").Subrouter()

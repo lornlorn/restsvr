@@ -47,7 +47,16 @@ func AutocompleteHandler(res http.ResponseWriter, req *http.Request) {
 func DataHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route HTML : %v\n", req.URL)
 	vars := mux.Vars(req)
-	subroute := vars["module"]
-	log.Println(subroute)
+	function := vars["func"]
+	log.Println(function)
+	return
+}
+
+// TableHandler func(res http.ResponseWriter, req *http.Request)
+func TableHandler(res http.ResponseWriter, req *http.Request) {
+	log.Printf("Route HTML : %v\n", req.URL)
+	vars := mux.Vars(req)
+	function := vars["func"]
+	log.Println(function)
 	return
 }
