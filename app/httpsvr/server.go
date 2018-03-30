@@ -45,7 +45,10 @@ func initRoutes(r *mux.Router) {
 	ajax.HandleFunc("/data/{func}", handler.DataHandler)
 
 	// html router
-	r.HandleFunc("/html/{module}", handler.HTMLHandler)
+	h := r.PathPrefix("/html").Subrouter()
+	h.HandleFunc("/", handler.NotFoundHandler)
+	h.HandleFunc("/{key}", handler.NotFoundHandler)
+	h.HandleFunc("/{group}/{module}", handler.HTMLHandler)
 
 	// test
 	r.HandleFunc("/redis", handler.RedisHandler)
@@ -55,9 +58,9 @@ func initRoutes(r *mux.Router) {
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	// subrouter
-	s := r.PathPrefix("/").Subrouter()
-	s.HandleFunc("/", handler.NotFoundHandler)
-	s.HandleFunc("/{key}", handler.NotFoundHandler)
+	root := r.PathPrefix("/").Subrouter()
+	root.HandleFunc("/", handler.NotFoundHandler)
+	root.HandleFunc("/{key}", handler.NotFoundHandler)
 
 	// http.HandleFunc("/", notFoundHandler)
 	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))

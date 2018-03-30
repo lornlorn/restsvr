@@ -13,8 +13,9 @@ import (
 func HTMLHandler(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Route HTML : %v\n", req.URL)
 	vars := mux.Vars(req)
-	subroute := vars["module"]
-	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v.html", subroute))
+	group := vars["group"]
+	module := vars["module"]
+	tmpl, err := template.ParseFiles(fmt.Sprintf("views/html/%v/%v.html", group, module))
 	if err != nil {
 		log.Printf("Parse Error : %v\n", err)
 
